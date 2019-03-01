@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next pisces" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/zxy/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/zxy/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/zxy/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/zxy/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/zxy/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/zxy/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/zxy/',
+    scheme: 'Pisces',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="概要在分布式系统中采用多副本存储数据，要保证各个数据副本的一致性，就要保证多个副本的更新操作序列{Op1,Op2,…,Opn}是相同的。而共识算法正是为解决分布式系统的一致性问题提出的，即保证集群中所有节点中的数据及更新操作序列完全相同。 共识算法又分为非拜占庭容错（eg. Paxos, Raft）和拜占庭容错（eg. POW, POS, DPOS），本文主要介绍非拜占庭容错的共识算法。 分布式基">
+<meta name="keywords" content="共识算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式一致性与共识算法">
+<meta property="og:url" content="https://zxy110.github.io/zxy/2019/02/28/分布式一致性与共识算法/index.html">
+<meta property="og:site_name" content="Sarah&#39;s Blogs">
+<meta property="og:description" content="概要在分布式系统中采用多副本存储数据，要保证各个数据副本的一致性，就要保证多个副本的更新操作序列{Op1,Op2,…,Opn}是相同的。而共识算法正是为解决分布式系统的一致性问题提出的，即保证集群中所有节点中的数据及更新操作序列完全相同。 共识算法又分为非拜占庭容错（eg. Paxos, Raft）和拜占庭容错（eg. POW, POS, DPOS），本文主要介绍非拜占庭容错的共识算法。 分布式基">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-01T08:14:35.781Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="分布式一致性与共识算法">
+<meta name="twitter:description" content="概要在分布式系统中采用多副本存储数据，要保证各个数据副本的一致性，就要保证多个副本的更新操作序列{Op1,Op2,…,Opn}是相同的。而共识算法正是为解决分布式系统的一致性问题提出的，即保证集群中所有节点中的数据及更新操作序列完全相同。 共识算法又分为非拜占庭容错（eg. Paxos, Raft）和拜占庭容错（eg. POW, POS, DPOS），本文主要介绍非拜占庭容错的共识算法。 分布式基">
+
+
+
+
+
+
+  <link rel="canonical" href="https://zxy110.github.io/zxy/2019/02/28/分布式一致性与共识算法/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>分布式一致性与共识算法 | Sarah's Blogs</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/zxy/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sarah's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/zxy/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/zxy/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/zxy/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/zxy/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zxy110.github.io/zxy/zxy/2019/02/28/分布式一致性与共识算法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="吃不胖的小鱼">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/zxy/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sarah's Blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">分布式一致性与共识算法
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-28 11:08:43" itemprop="dateCreated datePublished" datetime="2019-02-28T11:08:43+08:00">2019-02-28</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-03-01 16:14:35" itemprop="dateModified" datetime="2019-03-01T16:14:35+08:00">2019-03-01</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/zxy/categories/分布式/" itemprop="url" rel="index"><span itemprop="name">分布式</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>在分布式系统中采用多副本存储数据，要保证各个数据副本的一致性，就要保证多个副本的更新操作序列{Op1,Op2,…,Opn}是相同的。而共识算法正是为解决分布式系统的一致性问题提出的，即保证集群中所有节点中的数据及更新操作序列完全相同。</p>
+<p>共识算法又分为非拜占庭容错（eg. Paxos, Raft）和拜占庭容错（eg. POW, POS, DPOS），本文主要介绍非拜占庭容错的共识算法。</p>
+<h2 id="分布式基础知识"><a href="#分布式基础知识" class="headerlink" title="分布式基础知识"></a>分布式基础知识</h2><ol>
+<li><strong>CAP理论</strong>是分布式系统著名的定理，即“在异步的网络模型中，所有的节点由于没有时钟仅仅能根据接收到的消息做出判断，这时不能同时保证一致性、 可用性和分区容错性，三者不可兼得”。由于网络一定会存在延时，因此强一致性的系统会导致系统的可用性降低，因此在实际情况中，我们往往通过降低对一致性的要求，实现一致性和可用性的权衡，所以在目前主流的分布式系统中都选<strong>最终一致性</strong>。最终一致性允许多个节点的状态出现冲突，但是所有<strong>能够沟通</strong>的节点都能够在<strong>有限的时间</strong>内解决冲突。</li>
+<li><strong>拜占庭将军问题</strong>是分布式系统中著名的容错问题，指出”存在消息丢失的不可靠信道上试图通过消息传递的方式达到一致性是不可能的。因此对一致性的研究一般假设信道是可靠的，或不存在本问题“，而Lamport证明了”在将军总数大于3m ，背叛者为m 或者更少时，忠诚的将军可以达成命令上的一致“。</li>
+<li><strong>FLP不可能定理</strong>是分布式系统领域重要定理之一，指出了”在网络可靠并且存在节点失效的异步模型系统中，不存在一个可以解决一致性问题的确定性算法“。</li>
+</ol>
+<h2 id="Paxos"><a href="#Paxos" class="headerlink" title="Paxos"></a>Paxos</h2><h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><ol>
+<li>设计一个系统，存储名称为var的变量（var是任意二进制数据，由Proposer提交，Acceptor存储和管理）；</li>
+<li>系统需要保证var取值满足一致性；</li>
+<li>满足容错性（可容忍任意Proposer故障及半数以下Acceptor故障）。</li>
+</ol>
+<h3 id="历史方案"><a href="#历史方案" class="headerlink" title="历史方案"></a>历史方案</h3><ol>
+<li><p>单个Acceptor，Proposer通过<strong>互斥锁</strong>申请访问权，提交取值；</p>
+<p>-&gt; 不能容忍Proposer的故障，会导致系统陷入死锁。</p>
+</li>
+<li><p>抢占式访问权，Proposer向Acceptor申请访问权时<strong>指定编号epoch</strong>（越打越新），Acceptor采用<strong>喜新厌旧</strong>的原则，给新epoch发放访问权。新epoch可以抢占旧epoch使之失效，为了保持一致性，不同epoch的proposer之间采用<strong>“后者认同前者”</strong>的原则，只有在肯定旧epoch无法生成确定性取值时才会提交自己的value，否则承认旧epoch的值。</p>
+<p>-&gt; 仍需要引入多Acceptor。</p>
+</li>
+</ol>
+<h3 id="Paxos方案"><a href="#Paxos方案" class="headerlink" title="Paxos方案"></a>Paxos方案</h3><p>Proposer：</p>
+<ol>
+<li>获取半数以上Acceptor的访问权和对应的一组var的取值，获得访问权；</li>
+<li><strong>后者认同前者</strong>的原则执行value的提交：如果var的取值都为空，则努力使自己提交的var成为确定性取值；如果不为空，认同对应var的取值，并努力使之成为确定性取值。</li>
+</ol>
+<h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><ol>
+<li><p>微信生产级paxos类库PhxPaxos</p>
+<p>引入了learner，Leader和状态机</p>
+</li>
+<li><p>Paxos在Google的Chubby, Megastore和Spanner中的应用</p>
+</li>
+<li><p>利用Paxos实现一个分布式存储系统</p>
+</li>
+</ol>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a href="https://www.bilibili.com/video/av36134550/" target="_blank" rel="noopener">https://www.bilibili.com/video/av36134550/</a></p>
+<p>微信生产级paxos类库PhxPaxos：<a href="https://mp.weixin.qq.com/s/6VWUA5EDV2UIq4NqmQYWUA" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/6VWUA5EDV2UIq4NqmQYWUA</a></p>
+<p>分布式一致性与共识算法：<a href="https://draveness.me/consensus" target="_blank" rel="noopener">https://draveness.me/consensus</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/zxy/tags/共识算法/" rel="tag"># 共识算法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/zxy/2019/01/04/随机数概论/" rel="next" title="随机数">
+                <i class="fa fa-chevron-left"></i> 随机数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/zxy/2019/03/01/网络编程/" rel="prev" title="网络编程">
+                网络编程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">吃不胖的小鱼</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/zxy/archives/">
+                
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/zxy/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/zxy/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zxy110" title="GitHub &rarr; https://github.com/zxy110" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:zxy_whu@qq.com" title="E-Mail &rarr; mailto:zxy_whu@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概要"><span class="nav-text">概要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式基础知识"><span class="nav-text">分布式基础知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Paxos"><span class="nav-text">Paxos</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#场景"><span class="nav-text">场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#历史方案"><span class="nav-text">历史方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Paxos方案"><span class="nav-text">Paxos方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实战"><span class="nav-text">实战</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文章"><span class="nav-text">参考文章</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吃不胖的小鱼</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/zxy/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/zxy/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/zxy/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/zxy/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/zxy/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/zxy/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/zxy/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/zxy/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/zxy/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/zxy/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

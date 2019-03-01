@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next pisces" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/zxy/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/zxy/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/zxy/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/zxy/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/zxy/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/zxy/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/zxy/',
+    scheme: 'Pisces',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="VRF概论1. Why VRF？ 场景     在区块链场景中，有的框架会用算法随机产生出块节点与验证节点（如Algorand），甚至解决分叉。按传统的随机算法，按一定的哈希规则随机轮询，选出一个节点来记账/验证。如果这个随机轮询的规则是谁都可以复现的，那么可以推测出将来的某个记账/验证节点，集中攻击它。      为了解决这个问题，就引入了VRF，只有自己能够完成这个哈希过程，而别人只能在他声明">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sarah&#39;s Blogs">
+<meta property="og:url" content="https://zxy110.github.io/zxy/test/VRF概论.html">
+<meta property="og:site_name" content="Sarah&#39;s Blogs">
+<meta property="og:description" content="VRF概论1. Why VRF？ 场景     在区块链场景中，有的框架会用算法随机产生出块节点与验证节点（如Algorand），甚至解决分叉。按传统的随机算法，按一定的哈希规则随机轮询，选出一个节点来记账/验证。如果这个随机轮询的规则是谁都可以复现的，那么可以推测出将来的某个记账/验证节点，集中攻击它。      为了解决这个问题，就引入了VRF，只有自己能够完成这个哈希过程，而别人只能在他声明">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="f:/BC&NDN&IOT/Privicy/VRF/Image/VRF举例.png">
+<meta property="og:image" content="f:/BC&NDN&IOT/Privicy/VRF/Image/四个函数.png">
+<meta property="og:image" content="f:/BC&NDN&IOT/Privicy/VRF/Image/应用.png">
+<meta property="og:image" content="f:/BC&NDN&IOT/Privicy/VRF/Image/Ouroboros.png">
+<meta property="og:image" content="f:/BC&NDN&IOT/Privicy/VRF/Image/Ouroboros%20Paros.png">
+<meta property="og:updated_time" content="2019-03-01T08:14:35.848Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sarah&#39;s Blogs">
+<meta name="twitter:description" content="VRF概论1. Why VRF？ 场景     在区块链场景中，有的框架会用算法随机产生出块节点与验证节点（如Algorand），甚至解决分叉。按传统的随机算法，按一定的哈希规则随机轮询，选出一个节点来记账/验证。如果这个随机轮询的规则是谁都可以复现的，那么可以推测出将来的某个记账/验证节点，集中攻击它。      为了解决这个问题，就引入了VRF，只有自己能够完成这个哈希过程，而别人只能在他声明">
+<meta name="twitter:image" content="f:/BC&NDN&IOT/Privicy/VRF/Image/VRF举例.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://zxy110.github.io/zxy/test/VRF概论.html">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title> | Sarah's Blogs</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/zxy/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sarah's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/zxy/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/zxy/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/zxy/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/zxy/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+
+</h1>
+
+<div class="post-meta">
+  
+  
+
+
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+        
+        
+          <h3 id="VRF概论"><a href="#VRF概论" class="headerlink" title="VRF概论"></a>VRF概论</h3><h5 id="1-Why-VRF？"><a href="#1-Why-VRF？" class="headerlink" title="1. Why VRF？"></a>1. Why VRF？</h5><ul>
+<li><p>场景</p>
+<pre><code>    在区块链场景中，有的框架会用算法随机产生出块节点与验证节点（如Algorand），甚至解决分叉。按传统的随机算法，按一定的哈希规则随机轮询，选出一个节点来记账/验证。如果这个随机轮询的规则是谁都可以复现的，那么可以推测出将来的某个记账/验证节点，集中攻击它。
+
+    为了解决这个问题，就引入了VRF，只有自己能够完成这个哈希过程，而别人只能在他声明之后验证这个过程，防止有人可以提前推测出将来的记账节点。                        
+</code></pre></li>
+<li><p>POS中的权益研磨（Grinding）</p>
+<p>（以下来源于以太坊Github上的《<a href="https://github.com/ethereum/wiki/wiki/Proof-of-Stake-FAQs" target="_blank" rel="noopener">Proof of Stake FAQ</a>》）</p>
+<pre><code>    在任何基于区块链的权益证明算法中，都需要某种机制，来随机从当前活跃验证者集合中选择能够产生下一个区块的验证者。举个例子，如果当前活跃的验证者集合由持有40以太币的 Alice，持有 30 以太币的 Bob，持有 20 以太币的 Charlie 与持有 10 以太币的 David 组成，那么你想让 Alice 成为下一个区块的创建者的概率为 40%，而 Bob 的概率为 30% 等（在实践中，不仅要随机选择一个验证者，而是要（随机产生）一个无限验证者序列，只有这样如果 Alice 不在线的时候，就可以有其他人在过段时间替代她，但是这并没有改变问题的本质）。在非基于区块链的算法中，出于不同的原因也经常需要考虑随机性。
+</code></pre><p>​    （以下来源Ouroboros白皮书《<a href="https://link.jianshu.com/?t=https%3A%2F%2Feprint.iacr.org%2F2016%2F889.pdf%3Fnsukey%3DQRILh1BmjE5k%252BvQjynm%252F8CQnpycVkRtlhQSCk3m9mGPIMbtcRp5Akse%252FVt9b6v24XVK27vaSczZjH%252BtBcuUsAihW4l0RO%252Bjea4aSj%252BhS4ktWhidEePrI2uG3GEECQ2PoBe8vMZMhR93MVWyaHdT9P29f4vpunEIPWUNbnfXx4zvXTi%252B1FWAMlqqRAnyYnQhu8jUgX%252FEqrqKbyl%252B6HsE2Fw%253D%253D" target="_blank" rel="noopener">Ouroboros: A Provably Secure Proof-of-Stake Blockchain Protocol</a>》）</p>
+<pre><code>    基于PoS的区块链协议最基本的一个问题就是模拟领导者选举过程。为了在股东们之间的选举达到一个真正的随机性，系统中就必须要引入熵(entropy)，但引入熵的机制可能会容易被敌手操作。例如，一个控制一群股东的敌手可能会试图模拟协议的执行，尝试不同的股东参与者的顺序以此来找到对敌对股东有力的继续者。这会导致一个叫做&quot;grinding&quot;的致命弱点，敌对参与者可能会使用计算资源来倾斜领导者选举。
+</code></pre></li>
+<li><p>VRF的目的</p>
+<p>VRF 的目的就是要生成随机值，既要可验证，可重放又要无法被预测。</p>
+</li>
+</ul>
+<h5 id="2-VRF是什么"><a href="#2-VRF是什么" class="headerlink" title="2. VRF是什么?"></a>2. VRF是什么?</h5><pre><code>     VRF是可验证随机函数(verifiable random function)，一方面具有伪随机性，另一方面它还具有可验证性(输出包括一个非交互零知识证明)
+</code></pre><ul>
+<li>伪随机性</li>
+<li><p>可验证性</p>
+<pre><code>  VRF 的方式是，实现本地抽签，各个节点自己抽签，如果抽中了之后，大家可以很容易地验证这个结果确实是你生成的。
+</code></pre></li>
+</ul>
+<p>eg. 假设现在是 round 10（第 10 轮），节点们可能会轮流抽签，以节点自己的私钥 + 一个全网都知道的随机数（比如是这轮的轮次 10）作为输入，生成了一个随机数（0-100）；设置一个条件：100 个节点轮流抽签，谁先抽出来的随机数大于 10，就是这一轮的打包者。假设 5 号节点抽到了 11，可是只有 5 号知道其他人不知道，因此他在广播这个随机的同时还需要广播一个零知识证明。通过零知识证明，全网只需要通过 5 号的公钥就可以验证，接受 5 号为这轮打包者。图解如下：</p>
+<p><img src="F:\BC&amp;NDN&amp;IOT\Privicy\VRF\Image\VRF举例.png" alt="VRF举例"></p>
+<h5 id="3-VRF具体的操作流程？"><a href="#3-VRF具体的操作流程？" class="headerlink" title="3. VRF具体的操作流程？"></a>3. VRF具体的操作流程？</h5><p><img src="F:\BC&amp;NDN&amp;IOT\Privicy\VRF\Image\四个函数.png" alt="四个函数"></p>
+<ul>
+<li>证明者生成一对密钥，PK、SK；</li>
+<li>证明者计算result = VRF_Hash（SK，info），proof = VRF_Proof（SK，info）；</li>
+<li>证明者把result，proof，PK递交给验证者；</li>
+<li>验证者计算result = VRF_P2H（proof)，True/False = VRF_Verify(PK, info, proof) </li>
+</ul>
+<p>True表示验证通过，False表示验证未通过。所谓的验证通过，就是指proof是否是通过info生成的，通过proof是否可以计算出result，从而推导出info和result是否对应匹配、证明者给出的材料是否有问题。</p>
+<h5 id="4-抽签有没有必要用VRF？"><a href="#4-抽签有没有必要用VRF？" class="headerlink" title="4. 抽签有没有必要用VRF？"></a>4. 抽签有没有必要用VRF？</h5><ul>
+<li>相比随机预言机</li>
+</ul>
+<ol>
+<li>普通哈希Hash(a)=b，所有人都可以重现，检验正确性；</li>
+<li>VRF是Hash(SIG(sk, a))=b，别人无法复现这个过程。但是可以拿b，pk，和中间信息验证b是跟a对应的。</li>
+</ol>
+<ul>
+<li>相比非对称加密</li>
+</ul>
+<ol>
+<li>在密码学签名算法中，大都会引入随机性，也就是对相同信息的多次签名会得到不同的签名值，因此矿工可以不断对相同的输入SK和block，计算签名，以满足结果小于D。那么理论上任何人都会成为出块者，只要计算足够多次的签名。</li>
+<li>有些非对称加密方式得到的随机数不是均匀分布的，如RSA</li>
+<li>缺乏零知识，不管使用确定性签名还是随机性签名，都存在个安全隐患。就是一旦将自己的出块凭证公布，任何人都可以公开验证，包括攻击者。那么攻击者可以对出块节点进行攻击，使其不能出块。使用VRFs的方式，矿工只需要公布自己的R表明自己的出块权，当出完块的时候再公布P，那么攻击者就无法在出块之前知道谁具有出块权，因此也就无法实施针对性的攻击。</li>
+</ol>
+<h5 id="5-应用"><a href="#5-应用" class="headerlink" title="5. 应用"></a>5. 应用</h5><ol>
+<li><p><strong>Consensus：共识算法中安全性</strong></p>
+<p>VRF Sortition，Smart Contracts， 例如本体，Cardano，Dfinity，Algorand等，不同点在于如何产生输入以及输出怎样用。VRF的返回结果可以用来公开或私密地完成节点或节点群体的选择。eg. Dfinity利用mod操作来唯一，公开的确定一个group。Algorand，Ouroboros Praos是私密选择，即计算出哈希值后，如果哈希值小于某个阈值，节点可以私密地知道自己被选中。</p>
+</li>
+</ol>
+<p><img src="F:\BC&amp;NDN&amp;IOT\Privicy\VRF\Image\应用.png" alt="应用"></p>
+<ul>
+<li><p><strong>本体-VBFT共识算法</strong>：</p>
+<ol>
+<li>根据 VRF 从共识网络中选择备选提案节点，各个备选节点将独立提出备选区块；</li>
+<li>根据 VRF 从共识网络中选择多个验证节点，每个验证节点将从网络中收集备选的区块，进行验证，然后对最高优先级的备选区块进行投票；</li>
+<li>根据 VRF 从共识网络中选择多个确认节点，对上述验证节点的投票结果进行统计验证，并确定出最终的共识结果。</li>
+<li>所有节点都将接收确认节点的共识结果，并在一轮共识确认后开启新的共识。</li>
+</ol>
+</li>
+<li><p><strong>Algorand中</strong>：</p>
+<ol>
+<li>先选打包者，选完打包者选委员会，委员会用BA*进行选区块。</li>
+<li>输入值由前一个随机数(最初的随机数是协议给定的)和某种代表高度，轮次的变量进行组合，然后用私钥对之进行签名(或者先签名再组合)，最后哈希一下得出最新的随机数。</li>
+<li>条件：①签名算法应当具有唯一性；②避免在生成新随机数时将当前块的数据作为随机性来源之一。</li>
+</ol>
+</li>
+<li><p><strong>Dfinity中</strong>：</p>
+<p>交保证金提高门槛，并降低参与节点的数量，然后选打包者，选完打包者选公证人，对区块权重进行排序，选出区块。</p>
+</li>
+<li><p><strong>Cardano的共识机制-Ouroboros Praos</strong>：</p>
+<p>在根据Random seed选举slot leader时，通过VRF确保slot leader不被事先计算出来被攻击。</p>
+<p><img src="F:\BC&amp;NDN&amp;IOT\Privicy\VRF\Image\Ouroboros.png" alt="Ouroboros"><img src="F:\BC&amp;NDN&amp;IOT\Privicy\VRF\Image\Ouroboros Paros.png" alt="Ouroboros Paros"></p>
+</li>
+</ul>
+<ol>
+<li><p><strong>IOST的高效分布式分配片</strong></p>
+<p>使用了VRF来进行领头节点的选举，通过VRF得到随机数之后，会将结果进行广播，然后其他节点会进行统计，得到随机数值最小的作为分片领头节点。是一种交互式的选举方式。—用VRF保证公正性和不可攻击的特性。</p>
+</li>
+<li><p><strong>Key Transparency</strong></p>
+<p>密钥管理系统，使我的消息在不相信服务端的情况下做到点对点的安全上的提升。</p>
+</li>
+<li><p><strong>DNSSEC</strong></p>
+<p>DNS服务的安全性。</p>
+</li>
+</ol>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+
+
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">吃不胖的小鱼</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/zxy/archives/">
+                
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/zxy/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/zxy/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zxy110" title="GitHub &rarr; https://github.com/zxy110" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:zxy_whu@qq.com" title="E-Mail &rarr; mailto:zxy_whu@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#VRF概论"><span class="nav-text">VRF概论</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-Why-VRF？"><span class="nav-text">1. Why VRF？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-VRF是什么"><span class="nav-text">2. VRF是什么?</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-VRF具体的操作流程？"><span class="nav-text">3. VRF具体的操作流程？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-抽签有没有必要用VRF？"><span class="nav-text">4. 抽签有没有必要用VRF？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-应用"><span class="nav-text">5. 应用</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吃不胖的小鱼</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/zxy/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/zxy/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/zxy/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/zxy/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/zxy/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/zxy/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/zxy/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/zxy/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/zxy/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/zxy/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
