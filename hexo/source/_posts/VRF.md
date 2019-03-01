@@ -1,6 +1,6 @@
 ---
 title: VRF
-date: 2019-03-01 15:51:15
+date: 2019-01-02 15:51:15
 categories:
   - 密码学
 tags: [区块链, 零知识证明]
@@ -39,11 +39,11 @@ VRF是可验证随机函数(verifiable random function)，一方面具有伪随�
 
 eg. 假设现在是 round 10（第 10 轮），节点们可能会轮流抽签，以节点自己的私钥 + 一个全网都知道的随机数（比如是这轮的轮次 10）作为输入，生成了一个随机数（0-100）；设置一个条件：100 个节点轮流抽签，谁先抽出来的随机数大于 10，就是这一轮的打包者。假设 5 号节点抽到了 11，可是只有 5 号知道其他人不知道，因此他在广播这个随机的同时还需要广播一个零知识证明。通过零知识证明，全网只需要通过 5 号的公钥就可以验证，接受 5 号为这轮打包者。图解如下：
 
-![VRF举例](F:\BC&NDN&IOT\Privicy\VRF\Image\VRF举例.png)
+![VRF举例](\images\VRF\VRF举例.png)
 
 ##### 3. VRF具体的操作流程？
 
-![四个函数](F:\BC&NDN&IOT\Privicy\VRF\Image\四个函数.png)
+![四个函数](\images\VRF\四个函数.png)
 
 - 证明者生成一对密钥，PK、SK；
 - 证明者计算result = VRF_Hash（SK，info），proof = VRF_Proof（SK，info）；
@@ -71,7 +71,7 @@ True表示验证通过，False表示验证未通过。所谓的验证通过，�
 
    VRF Sortition，Smart Contracts， 例如本体，Cardano，Dfinity，Algorand等，不同点在于如何产生输入以及输出怎样用。VRF的返回结果可以用来公开或私密地完成节点或节点群体的选择。eg. Dfinity利用mod操作来唯一，公开的确定一个group。Algorand，Ouroboros Praos是私密选择，即计算出哈希值后，如果哈希值小于某个阈值，节点可以私密地知道自己被选中。
 
-![应用](F:\BC&NDN&IOT\Privicy\VRF\Image\应用.png)
+![应用](\images\VRF\应用.png)
 
 - **本体-VBFT共识算法**：
 
@@ -94,7 +94,7 @@ True表示验证通过，False表示验证未通过。所谓的验证通过，�
 
   在根据Random seed选举slot leader时，通过VRF确保slot leader不被事先计算出来被攻击。
 
-  ![Ouroboros](F:\BC&NDN&IOT\Privicy\VRF\Image\Ouroboros.png)![Ouroboros Paros](F:\BC&NDN&IOT\Privicy\VRF\Image\Ouroboros Paros.png)
+  ![Ouroboros](\images\VRF\Ouroboros.png)![Ouroboros Paros](\images\VRF\Ouroboros Paros.png)
 
 1. **IOST的高效分布式分配片**
 
