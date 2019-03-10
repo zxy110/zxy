@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next pisces" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/zxy/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/zxy/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/zxy/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/zxy/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/zxy/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/zxy/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/zxy/',
+    scheme: 'Pisces',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="签名算法有RSA、DSA、ECC（ECDSA）等。前两者因为秘钥长度和性能的关系，现在使用越来越少，例如常见的RSA2048，秘钥长度就达到了2048bit，也就是2KB大小，在一些嵌入式场合消耗比较大，而ECC只需要224bit，因此比特币在保证数据安全性基础的算法选择上选择了ECC。ECC也就是椭圆曲线密码学，在使用ECC进行数字签名的时候，需要构造一条曲线，也可以选择标准曲线，诸如：prim">
+<meta name="keywords" content="区块链">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ECC">
+<meta property="og:url" content="https://zxy110.github.io/zxy/2019/03/10/ECC/index.html">
+<meta property="og:site_name" content="Sarah&#39;s Blogs">
+<meta property="og:description" content="签名算法有RSA、DSA、ECC（ECDSA）等。前两者因为秘钥长度和性能的关系，现在使用越来越少，例如常见的RSA2048，秘钥长度就达到了2048bit，也就是2KB大小，在一些嵌入式场合消耗比较大，而ECC只需要224bit，因此比特币在保证数据安全性基础的算法选择上选择了ECC。ECC也就是椭圆曲线密码学，在使用ECC进行数字签名的时候，需要构造一条曲线，也可以选择标准曲线，诸如：prim">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-10T12:59:41.647Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ECC">
+<meta name="twitter:description" content="签名算法有RSA、DSA、ECC（ECDSA）等。前两者因为秘钥长度和性能的关系，现在使用越来越少，例如常见的RSA2048，秘钥长度就达到了2048bit，也就是2KB大小，在一些嵌入式场合消耗比较大，而ECC只需要224bit，因此比特币在保证数据安全性基础的算法选择上选择了ECC。ECC也就是椭圆曲线密码学，在使用ECC进行数字签名的时候，需要构造一条曲线，也可以选择标准曲线，诸如：prim">
+
+
+
+
+
+
+  <link rel="canonical" href="https://zxy110.github.io/zxy/2019/03/10/ECC/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>ECC | Sarah's Blogs</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/zxy/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sarah's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/zxy/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/zxy/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/zxy/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/zxy/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zxy110.github.io/zxy/zxy/2019/03/10/ECC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="吃不胖的小鱼">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/zxy/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sarah's Blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ECC
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-10 09:55:09 / 修改时间：20:59:41" itemprop="dateCreated datePublished" datetime="2019-03-10T09:55:09+08:00">2019-03-10</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/zxy/categories/密码学/" itemprop="url" rel="index"><span itemprop="name">密码学</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>签名算法有RSA、DSA、ECC（ECDSA）等。前两者因为秘钥长度和性能的关系，现在使用越来越少，例如常见的RSA2048，秘钥长度就达到了2048bit，也就是2KB大小，在一些嵌入式场合消耗比较大，而ECC只需要224bit，因此比特币在保证数据安全性基础的算法选择上选择了ECC。<br>ECC也就是椭圆曲线密码学，在使用ECC进行数字签名的时候，需要构造一条曲线，也可以选择标准曲线，诸如：prime256v1、secp256r1、nistp256、secp256k1等等。我们使用的是secp256k1，也就是比特币选择的加密曲线,秘钥长度256bit，也就是32字节。</p>
+<h2 id="secp256k1"><a href="#secp256k1" class="headerlink" title="secp256k1"></a>secp256k1</h2><h3 id="秘钥生成"><a href="#秘钥生成" class="headerlink" title="秘钥生成"></a>秘钥生成</h3><p>KeyUtils.java:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * This function is used to generate ECC keys</span><br><span class="line"> */</span><br><span class="line">public static KeyPair generateKeypair(String curveName)throws Exception&#123;</span><br><span class="line">    KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(&quot;EC&quot;);</span><br><span class="line">    ECGenParameterSpec ecGenParameterSpec = new ECGenParameterSpec(curveName);</span><br><span class="line">    keyPairGenerator.initialize(ecGenParameterSpec, new SecureRandom());</span><br><span class="line">    KeyPair keyPair = keyPairGenerator.generateKeyPair();</span><br><span class="line"></span><br><span class="line">    //System.out.println(&quot;public key: &quot;+keyPair.getPublic());</span><br><span class="line">    //System.out.println(&quot;private key: &quot;+keyPair.getPrivate());</span><br><span class="line">    return keyPair;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>secp256k1.java:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public static void generateKeypair()&#123;</span><br><span class="line">    try&#123;</span><br><span class="line">        keyPair=KeyUtils.generateKeypair(&quot;secp256k1&quot;);</span><br><span class="line">    &#125;catch(Exception e)&#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="秘钥存储"><a href="#秘钥存储" class="headerlink" title="秘钥存储"></a>秘钥存储</h3><p>KeyUtils.java:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * The following two functions are used to save the keys.</span><br><span class="line"> * You can run the follow command in terminal to print the pub.der and pri.der:</span><br><span class="line"> * pub.der: openssl pkey -inform DER -pubin -in publickey.der -text</span><br><span class="line"> * pri.der: openssl pkey -inform DER -in privatekey.der -text</span><br><span class="line"> */</span><br><span class="line">public static void savePublicKey(KeyPair keyPair, String fileName)throws Exception&#123;</span><br><span class="line">    PublicKey publicKey = keyPair.getPublic();</span><br><span class="line">    byte[] pub = publicKey.getEncoded();</span><br><span class="line"></span><br><span class="line">    OutputStream pubfs = new FileOutputStream(fileName);</span><br><span class="line">    for (int i = 0; i &lt; pub.length; i++) &#123;</span><br><span class="line">        pubfs.write(pub[i]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">public static void savePrivateKey(KeyPair keyPair, String fileName)throws Exception&#123;</span><br><span class="line">    PrivateKey privateKey=keyPair.getPrivate();</span><br><span class="line">    byte[] pri = privateKey.getEncoded();</span><br><span class="line"></span><br><span class="line">    OutputStream prifs=new FileOutputStream(fileName);</span><br><span class="line">    for(int i=0;i&lt;pri.length;i++)&#123;</span><br><span class="line">        prifs.write(pri[i]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>secp256k1.java:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public static void saveKeypair()&#123;</span><br><span class="line">    try&#123;</span><br><span class="line">        KeyUtils.savePublicKey(keyPair,&quot;keys/pub.der&quot;);</span><br><span class="line">        KeyUtils.savePrivateKey(keyPair,&quot;keys/pri.der&quot;);</span><br><span class="line">    &#125;catch(Exception e)&#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="秘钥加载"><a href="#秘钥加载" class="headerlink" title="秘钥加载"></a>秘钥加载</h3><p>KeyUtils.java:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * The following two functions are used to read the keys.</span><br><span class="line"> */</span><br><span class="line">public static PublicKey readPublicKey(byte[] encodedKey, String algorithm)</span><br><span class="line">        throws NoSuchAlgorithmException, InvalidKeySpecException &#123;</span><br><span class="line">    X509EncodedKeySpec keySpec=new X509EncodedKeySpec(encodedKey);</span><br><span class="line">    KeyFactory keyFactory=KeyFactory.getInstance(algorithm);</span><br><span class="line">    return keyFactory.generatePublic(keySpec);</span><br><span class="line">&#125;</span><br><span class="line">public static PrivateKey readPrivateKey(byte[] encodedKey, String algorithm)</span><br><span class="line">        throws NoSuchAlgorithmException, InvalidKeySpecException&#123;</span><br><span class="line">    PKCS8EncodedKeySpec keySpec=new PKCS8EncodedKeySpec(encodedKey);</span><br><span class="line">    KeyFactory keyFactory=KeyFactory.getInstance(algorithm);</span><br><span class="line">    return keyFactory.generatePrivate(keySpec);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line"> * The following two functions are used to get the keys.</span><br><span class="line"> */</span><br><span class="line">public static PublicKey getPublicKey(String filename, String algorithm) throws Exception&#123;</span><br><span class="line">    return readPublicKey(IOUtils.readBytes(</span><br><span class="line">            new FileInputStream(filename)),algorithm);</span><br><span class="line">&#125;</span><br><span class="line">public static PrivateKey getPrivateKey(String filename, String algorithm) throws Exception&#123;</span><br><span class="line">    return readPrivateKey(IOUtils.readBytes(</span><br><span class="line">            new FileInputStream(filename)),algorithm);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>secp256k1.java:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * This function is used to get the public key</span><br><span class="line"> */</span><br><span class="line">public static PublicKey getPublicKey()&#123;</span><br><span class="line">    try&#123;</span><br><span class="line">        return KeyUtils.getPublicKey(&quot;keys/pub.der&quot;,&quot;EC&quot;);</span><br><span class="line">    &#125;catch(Exception e)&#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line"> * This function is used to get the private key</span><br><span class="line"> */</span><br><span class="line">public static PrivateKey getPrivateKey()&#123;</span><br><span class="line">    try&#123;</span><br><span class="line">        return KeyUtils.getPrivateKey(&quot;keys/pri.der&quot;,&quot;EC&quot;);</span><br><span class="line">    &#125;catch(Exception e)&#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h2><p>在Java中，签名和校验，都是通过： Signature 类来实现的。<br>该类的主要方法：</p>
+<ul>
+<li>getInstance(String algorithm)</li>
+</ul>
+<p>工厂方法，获取Signature实例，而参数：algorithm就是签名算法的名称，这里我们使用的是：SHA256withECDSA<br>更具体的参数，请浏览：<a href="https://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#Signature" target="_blank" rel="noopener">https://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#Signature</a></p>
+<ul>
+<li>initSign(PrivateKey privateKey)</li>
+<li>initVerify(PublicKey publicKey)</li>
+</ul>
+<p>初始化成签名或者校验，Signature类的实例，在同一个阶段只能完成签名或者校验之一的任务，因此调用initSign或者initVeify让Signature进入相应的状态</p>
+<ul>
+<li>update(byte[] data)</li>
+</ul>
+<p>无论是计算签名，还是校验数据，都需要传入被签名或者被校验的数据，调用该方法进行计算。注意，该方法可以调用多次，通常数据都可能非常大，不可能一次性读入内存（从磁盘上或者网络），因此我们可以对数据进行分块，一次性一KB或者合适的块进行多次调用</p>
+<ul>
+<li>sign()</li>
+</ul>
+<p>获取签名，当所有的数据都调用update计算后，就可以获取签名了，返回的签名是一个byte数组</p>
+<ul>
+<li>verify(byte[] signature)</li>
+</ul>
+<p>校验签名，当所有的数据都调用update计算之后，调用该方法，传递签名数据，如果签名正确，那么返回true，否则返回false，说明数据可能被篡改、伪造，或者对应的私钥不正确。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">    public class Signatures &#123;</span><br><span class="line">    /*</span><br><span class="line">     * This function is used to sign data with the algorithm and key</span><br><span class="line">     */</span><br><span class="line">    public static byte[] signData(String algorithm, byte[] data, PrivateKey key)</span><br><span class="line">            throws Exception&#123;</span><br><span class="line">        Signature signer = Signature.getInstance(algorithm);</span><br><span class="line">        signer.initSign(key);</span><br><span class="line">        signer.update(data);</span><br><span class="line">        return (signer.sign());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /*</span><br><span class="line">     * This function is used to verify signature</span><br><span class="line">     */</span><br><span class="line">    public static boolean verifySign(String algorithm, byte[] data, PublicKey key, byte[] sig)</span><br><span class="line">        throws Exception&#123;</span><br><span class="line">        Signature signer = Signature.getInstance(algorithm);</span><br><span class="line">        signer.initVerify(key);</span><br><span class="line">        signer.update(data);</span><br><span class="line">        return (signer.verify(sig));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.jianshu.com/p/676a0eb33d31" target="_blank" rel="noopener">https://www.jianshu.com/p/676a0eb33d31</a></p>
+<p><a href="https://www.jianshu.com/p/e6ac2c75e692" target="_blank" rel="noopener">https://www.jianshu.com/p/e6ac2c75e692</a></p>
+<p><a href="https://www.pediy.com/kssd/pediy06/pediy6014.htm" target="_blank" rel="noopener">https://www.pediy.com/kssd/pediy06/pediy6014.htm</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/zxy/tags/区块链/" rel="tag"># 区块链</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/zxy/2019/03/01/test/" rel="next" title="test">
+                <i class="fa fa-chevron-left"></i> test
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/zxy/2019/03/10/SHA256/" rel="prev" title="SHA256">
+                SHA256 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">吃不胖的小鱼</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/zxy/archives/">
+                
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/zxy/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/zxy/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zxy110" title="GitHub &rarr; https://github.com/zxy110" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:zxy_whu@qq.com" title="E-Mail &rarr; mailto:zxy_whu@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#secp256k1"><span class="nav-text">secp256k1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#秘钥生成"><span class="nav-text">秘钥生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#秘钥存储"><span class="nav-text">秘钥存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#秘钥加载"><span class="nav-text">秘钥加载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#签名"><span class="nav-text">签名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吃不胖的小鱼</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/zxy/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/zxy/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/zxy/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/zxy/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/zxy/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/zxy/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/zxy/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/zxy/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/zxy/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/zxy/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
