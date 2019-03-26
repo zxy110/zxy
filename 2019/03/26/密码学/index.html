@@ -102,10 +102,12 @@
 <meta property="og:site_name" content="Sarah&#39;s Blogs">
 <meta property="og:description" content="对称加密算法对称密码包括分组密码与序列密码。分组密码代表算法有AES，DES/3DES，RC4等，序列密码代表算法有A51。 非对称加密算法非对称加密算法的安全性往往需要根据数学问题来保障，目前主要是基于大整数因数分解与离散对数，椭圆曲线等经典数学难题。  大整数分解难题：给定两个大素数，计算它们的乘积非常容易，但是将它们的乘积分解因式非常困难。 离散对数难题：设p是素数，\alpha\in Z^">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-26T11:10:30.861Z">
+<meta property="og:image" content="https://zxy110.github.io/images/PK.png">
+<meta property="og:updated_time" content="2019-03-26T11:11:49.072Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="密码学">
 <meta name="twitter:description" content="对称加密算法对称密码包括分组密码与序列密码。分组密码代表算法有AES，DES/3DES，RC4等，序列密码代表算法有A51。 非对称加密算法非对称加密算法的安全性往往需要根据数学问题来保障，目前主要是基于大整数因数分解与离散对数，椭圆曲线等经典数学难题。  大整数分解难题：给定两个大素数，计算它们的乘积非常容易，但是将它们的乘积分解因式非常困难。 离散对数难题：设p是素数，\alpha\in Z^">
+<meta name="twitter:image" content="https://zxy110.github.io/images/PK.png">
 
 
 
@@ -364,7 +366,7 @@
                 
               
 
-              <time title="创建时间：2019-03-26 19:00:55 / 修改时间：19:10:30" itemprop="dateCreated datePublished" datetime="2019-03-26T19:00:55+08:00">2019-03-26</time>
+              <time title="创建时间：2019-03-26 19:00:55 / 修改时间：19:11:49" itemprop="dateCreated datePublished" datetime="2019-03-26T19:00:55+08:00">2019-03-26</time>
             
 
             
@@ -516,7 +518,7 @@
 </li>
 </ol>
 <h2 id="关于HTTPs"><a href="#关于HTTPs" class="headerlink" title="关于HTTPs"></a>关于HTTPs</h2><p>在传统的HTTPs加密通信中，公钥的验证是通过CA进行的，即向CA注册时，能够拿到由CA签名加密的公钥，这样别人拿到后用CA的公钥解密即可验证其身份。</p>
-<p>具体来说，A与B通信，首先A向B发送自己的公钥，B通过CA验证A公钥的真实性，然后用A的公钥加密B的公钥和通信时使用的密钥，发给B，B用自己的私钥解开就拿到了通信密钥，之后即可通过通信密钥进行对称加密实现通信。原理图如下：<br><img src alt></p>
+<p>具体来说，A与B通信，首先A向B发送自己的公钥，B通过CA验证A公钥的真实性，然后用A的公钥加密B的公钥和通信时使用的密钥，发给B，B用自己的私钥解开就拿到了通信密钥，之后即可通过通信密钥进行对称加密实现通信。原理图如下：<br><img src="\images\PK.png" alt></p>
 <p>区块链中也依然存在CA实现公钥身份证明，若要去掉CA这个中心呢，设想公钥是否可以用区块链来实现公开透明共识，然后发现有人写了一篇专利，主要步骤如下：</p>
 <ol>
 <li>用户向代理节点申请将公钥托管在区块链中，用户向代理节点发送请求，请求在一定时间内将公钥存储在区块链网络中的权利，代理节点在通过申请后，生成一对临时的公钥私钥对以及用户的ID，代理节点将临时公钥、用户ID、用户托管的起止时间、代理节点的ID、签名算法以及信息类型标志打包成一个信息包，利用代理节点的公钥签名后发布到网络中，代理节点将密钥对信息以及用户ID发送给请求的用户，用户在信息被区块链确认之后，发布自己的公钥；</li>
