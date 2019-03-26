@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next pisces" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/zxy/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/zxy/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/zxy/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/zxy/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/zxy/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/zxy/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/zxy/',
+    scheme: 'Pisces',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="对称加密算法对称密码包括分组密码与序列密码。 分组密码代表算法：AES，DES/3DES，RC4 序列密码代表算法：A51 非对称加密算法非对称加密算法的安全性往往需要根据数学问题来保障，目前主要是基于大整数因数分解与离散对数，椭圆曲线等经典数学难题。  大整数分解难题：给定两个大素数，计算它们的乘积非常容易，但是将它们的乘积分解因式非常困难。 离散对数难题：设p是素数，\alpha\in Z^*">
+<meta name="keywords" content="区块链">
+<meta property="og:type" content="article">
+<meta property="og:title" content="密码学">
+<meta property="og:url" content="https://zxy110.github.io/zxy/2019/03/26/区块链中的密码学知识小结/index.html">
+<meta property="og:site_name" content="Sarah&#39;s Blogs">
+<meta property="og:description" content="对称加密算法对称密码包括分组密码与序列密码。 分组密码代表算法：AES，DES/3DES，RC4 序列密码代表算法：A51 非对称加密算法非对称加密算法的安全性往往需要根据数学问题来保障，目前主要是基于大整数因数分解与离散对数，椭圆曲线等经典数学难题。  大整数分解难题：给定两个大素数，计算它们的乘积非常容易，但是将它们的乘积分解因式非常困难。 离散对数难题：设p是素数，\alpha\in Z^*">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://zxy110.github.io/zxy/2019/03/26/images/PK.png">
+<meta property="og:updated_time" content="2019-03-26T11:02:02.191Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="密码学">
+<meta name="twitter:description" content="对称加密算法对称密码包括分组密码与序列密码。 分组密码代表算法：AES，DES/3DES，RC4 序列密码代表算法：A51 非对称加密算法非对称加密算法的安全性往往需要根据数学问题来保障，目前主要是基于大整数因数分解与离散对数，椭圆曲线等经典数学难题。  大整数分解难题：给定两个大素数，计算它们的乘积非常容易，但是将它们的乘积分解因式非常困难。 离散对数难题：设p是素数，\alpha\in Z^*">
+<meta name="twitter:image" content="https://zxy110.github.io/zxy/2019/03/26/images/PK.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://zxy110.github.io/zxy/2019/03/26/区块链中的密码学知识小结/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>密码学 | Sarah's Blogs</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/zxy/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sarah's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/zxy/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/zxy/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/zxy/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/zxy/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zxy110.github.io/zxy/zxy/2019/03/26/区块链中的密码学知识小结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="吃不胖的小鱼">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/zxy/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sarah's Blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">密码学
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-26 19:00:55 / 修改时间：19:02:02" itemprop="dateCreated datePublished" datetime="2019-03-26T19:00:55+08:00">2019-03-26</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/zxy/categories/密码学/" itemprop="url" rel="index"><span itemprop="name">密码学</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="对称加密算法"><a href="#对称加密算法" class="headerlink" title="对称加密算法"></a>对称加密算法</h2><p>对称密码包括分组密码与序列密码。</p>
+<h3 id="分组密码"><a href="#分组密码" class="headerlink" title="分组密码"></a>分组密码</h3><p>代表算法：AES，DES/3DES，RC4</p>
+<h3 id="序列密码"><a href="#序列密码" class="headerlink" title="序列密码"></a>序列密码</h3><p>代表算法：A51</p>
+<h2 id="非对称加密算法"><a href="#非对称加密算法" class="headerlink" title="非对称加密算法"></a>非对称加密算法</h2><p>非对称加密算法的安全性往往需要根据数学问题来保障，目前主要是基于大整数因数分解与离散对数，椭圆曲线等经典数学难题。</p>
+<blockquote>
+<p>大整数分解难题：给定两个大素数，计算它们的乘积非常容易，但是将它们的乘积分解因式非常困难。</p>
+<p>离散对数难题：设p是素数，<script type="math/tex">\alpha\in Z^*_p</script>是一个本原元，<script type="math/tex">\beta\in Z^*_p</script>。已知<script type="math/tex">\alpha</script>和<script type="math/tex">\beta</script>，求满足<script type="math/tex">\alpha^n=\beta mod p</script>的整数<script type="math/tex">n(0\leq n\leq p-2)</script>，并且n是唯一的，称为有限域上的离散对数问题，记<script type="math/tex">n=log_{\alpha}{\beta}</script>。</p>
+</blockquote>
+<p><strong>代表算法：</strong></p>
+<ul>
+<li>RSA：利用对大数进行质因子分解的困难性</li>
+<li>Diffle-Hellman密钥交换：利用离散对数求解困难性</li>
+<li>ElGamal：利用模运算下离散对数求解困难性</li>
+<li>椭圆曲线算法(ECC)：利用对椭圆曲线上特定点进行特殊乘法逆运算计算(离散对数)困难性</li>
+</ul>
+<p>以下进行详细介绍。</p>
+<h3 id="RSA公钥密码体制"><a href="#RSA公钥密码体制" class="headerlink" title="RSA公钥密码体制"></a>RSA公钥密码体制</h3><p>利用大数因数分解困难</p>
+<ul>
+<li>选取大素数p和q，并秘密保存；</li>
+<li>计算<script type="math/tex">n=pq, \phi(n)=(p-1)(q-1)</script>，其中公开n，秘密保存<script type="math/tex">\phi(n)</script>；</li>
+<li>随机选取正整数<script type="math/tex">e(1<e<\phi(n))</script>，使得<script type="math/tex">gcd(e,\phi(n))=1</script>。e作为加密密钥公开；</li>
+<li>解同余式<script type="math/tex">de=1(mod\phi(n))</script>，得到d作为解密密钥，秘密保存；</li>
+<li>加密：对明文<script type="math/tex">m\in Z_n</script>，计算<script type="math/tex">c=m^emodn</script>，得密文c；</li>
+<li>解密：对密文<script type="math/tex">c\in Z_n</script>，计算<script type="math/tex">m=c^dmodn</script>，得明文m。</li>
+</ul>
+<h3 id="Diffle-Hellman密钥交换"><a href="#Diffle-Hellman密钥交换" class="headerlink" title="Diffle-Hellman密钥交换"></a>Diffle-Hellman密钥交换</h3><p>利用离散对数求解困难</p>
+<ul>
+<li>Alice和Bob协商一个有限循环群G和它的一个生成元g；</li>
+<li>Alice随机选择自然数a并将<script type="math/tex">A = g^amodp</script>发送给Bob；</li>
+<li>Bob随机选择自然数b并将<script type="math/tex">B = g^bmodp</script>发送给Alice；</li>
+<li>Alice计算<script type="math/tex">B^a = (g^b)^amodp</script>;</li>
+<li>Bob计算<script type="math/tex">A^b = (g^a)^bmodp</script>;</li>
+<li>这样Alice和Bob就同时协商出群元素<script type="math/tex">g^{ab}</script>，用来共享秘密。</li>
+</ul>
+<h3 id="ELGamal公钥密码体制"><a href="#ELGamal公钥密码体制" class="headerlink" title="ELGamal公钥密码体制"></a>ELGamal公钥密码体制</h3><p>利用模运算上离散对数求解困难</p>
+<ul>
+<li>选取大素数p，<script type="math/tex">\alpha \in Z^*_P</script>是一个本原元，p和<script type="math/tex">\alpha</script>公开；</li>
+<li>随机选取整数<script type="math/tex">d(1\leq d\leq p-2)</script>，解同余式<script type="math/tex">\beta = \alpha^dmodp</script>，得到<script type="math/tex">\beta</script>作为加密密钥公开，d作为解密密钥，秘密保存；</li>
+<li>明文空间为<script type="math/tex">Z^*_p</script>，密文空间为<script type="math/tex">Z^*_p * Z^*_p</script>;</li>
+<li>加密：对任意明文<script type="math/tex">m\in Z^*_p</script>，秘密随机选取一个整数<script type="math/tex">k(1\leq k\leq p-2)</script>，计算<script type="math/tex">c_1=\alpha^kmodp</script>，<script type="math/tex">c2=m\beta^kmodp</script>得密文<script type="math/tex">c=(c1,c2)</script>；</li>
+<li>解密：对任意明文<script type="math/tex">c=(c_1,c_2)</script>，计算<script type="math/tex">m=c_2(c_1^d)^{-1}modp</script>得明文m。</li>
+</ul>
+<p>一般的，只要选取适当的素数p，在有限域<script type="math/tex">Z_p</script>上的离散对数问题是难解的。在上述中，由<script type="math/tex">\alpha</script>和<script type="math/tex">\beta</script>求解d，就是求解离散对数。</p>
+<h3 id="ECC椭圆曲线密码"><a href="#ECC椭圆曲线密码" class="headerlink" title="ECC椭圆曲线密码"></a>ECC椭圆曲线密码</h3><ol>
+<li><p>ECC的主要特点：</p>
+<ul>
+<li><p>比其他方法（如RSA）使用更小的密钥。</p>
+<p>签名算法有RSA、DSA、ECC（椭圆曲线数字签名算法ECDSA）等。前两者因为秘钥长度和性能的关系，现在使用越来越少，例如常见的RSA2048，秘钥长度就达到了2048bit，也就是2KB大小，在一些嵌入式场合消耗比较大，而ECC只需要224bit，因此比特币在保证数据安全性基础的算法选择上选择了ECC。</p>
+</li>
+<li><p>可以定义群之间的双线性映射，基于Weil对或Tate对。</p>
+</li>
+</ul>
+</li>
+<li><p>ECC也就是椭圆曲线密码学，在使用ECC进行数字签名的时候，需要构造一条曲线，也可以选择标准曲线，诸如：prime256v1、secp256r1、nistp256、secp256k1等等。比特币使用的是secp256k1，也就是比特币选择的加密曲线,秘钥长度256bit，也就是32字节。</p>
+</li>
+<li><p>过程</p>
+<ul>
+<li>用户A选定一条椭圆曲线<script type="math/tex">E_p(a,b)</script>，并取椭圆曲线上一点，作为基点<script type="math/tex">G</script>     </li>
+<li>用户A选择一个私有密钥<script type="math/tex">k</script>，并生成公开密钥<script type="math/tex">K=kG</script></li>
+<li>用户A将<script type="math/tex">E_p(a,b)</script>和点<script type="math/tex">K, G</script>传给用户B</li>
+<li>用户B接到信息后 ，将待传输的明文编码到<script type="math/tex">E_p(a,b)</script>上一点<script type="math/tex">M</script>，并产生一个随机整数<script type="math/tex">r（r<n）</script></li>
+<li>用户B计算点<script type="math/tex">C_1=M+rK</script>，<script type="math/tex">C_2=rG</script></li>
+<li>用户B将<script type="math/tex">C1, C2</script>传给用户A</li>
+<li>用户A接到信息后，计算<script type="math/tex">C_1-kC_2</script>，结果就是点<script type="math/tex">M</script>。因为<script type="math/tex">C_1-kC_2=M+rK-k(rG)=M+rK-r(kG)=M</script>，再对点M进行解码就可以得到明文。 </li>
+</ul>
+<p>在这个加密通信中，<script type="math/tex">E_p(a,b), K, G, C_1, C_2</script>是公开的，<script type="math/tex">k, r</script>是私密的，因为通过<script type="math/tex">K, G</script>求解<script type="math/tex">k</script>或通过<script type="math/tex">G2, G</script>求解<script type="math/tex">r</script>都是困难的，因此无法窃取明文信息。</p>
+</li>
+<li><p>拓展</p>
+<ul>
+<li>数学推导见<a href="https://www.pediy.com/kssd/pediy06/pediy6014.htm" target="_blank" rel="noopener">此处</a></li>
+<li>工程实践见<a href="https://www.jianshu.com/p/676a0eb33d31" target="_blank" rel="noopener">此处</a></li>
+</ul>
+</li>
+</ol>
+<h3 id="双线性映射-Bilinear-Pairing"><a href="#双线性映射-Bilinear-Pairing" class="headerlink" title="双线性映射(Bilinear Pairing)"></a>双线性映射(Bilinear Pairing)</h3><ol>
+<li><p>利用椭圆曲线上离散对数求解困难，可以从超奇异椭圆曲线中的Weil和Tate配对中得到。常用来构造零知识证明，基于身份的加密等。缺点是加解密操作的实现比其他机制花费的时间长。</p>
+</li>
+<li><p>定义</p>
+<p>设<script type="math/tex">G_1</script>是由<script type="math/tex">P</script>生成的循环加法群，其阶为素数q，<script type="math/tex">G_2</script>是一个阶为q的循环乘法群。双线性映射是指具有如下性质的映射<script type="math/tex">e: G_1 * G_1 -> G_2</script></p>
+<ul>
+<li>双线性：对所有的<script type="math/tex">P, Q\in G_1</script>和<script type="math/tex">a, b \in Z_q^*</script>，<script type="math/tex">e(aP, bQ)=e(abP, Q)=e(P, abQ)=e(P, Q)^{ab}</script></li>
+<li>非退化：存在一个<script type="math/tex">P\in G_1</script>，满足<script type="math/tex">e(P, P)\neq 1</script></li>
+<li>可计算：对<script type="math/tex">P, Q\in G_1</script>，存在一个有效的算法计算<script type="math/tex">e(P, Q)</script></li>
+</ul>
+</li>
+<li><p>拓展</p>
+<p>详见<a href="https://zxy110.github.io/zxy/2019/03/25/%E5%8F%8C%E7%BA%BF%E6%80%A7%E5%AF%B9%E7%9A%84%E7%A0%94%E7%A9%B6%E4%BB%A5%E5%8F%8A%E5%9C%A8%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/">此处</a></p>
+</li>
+</ol>
+<h2 id="关于HTTPs"><a href="#关于HTTPs" class="headerlink" title="关于HTTPs"></a>关于HTTPs</h2><p>在传统的HTTPs加密通信中，公钥的验证是通过CA进行的，即向CA注册时，能够拿到由CA签名加密的公钥，这样别人拿到后用CA的公钥解密即可验证其身份。</p>
+<p>具体来说，A与B通信，首先A向B发送自己的公钥，B通过CA验证A公钥的真实性，然后用A的公钥加密B的公钥和通信时使用的密钥，发给B，B用自己的私钥解开就拿到了通信密钥，之后即可通过通信密钥进行对称加密实现通信。原理图如下：<br><img src="../images/PK.png" alt></p>
+<p>区块链中也依然存在CA实现公钥身份证明，若要去掉CA这个中心呢，设想公钥是否可以用区块链来实现公开透明共识，然后发现有人写了一篇专利，主要步骤如下：</p>
+<ol>
+<li>用户向代理节点申请将公钥托管在区块链中，用户向代理节点发送请求，请求在一定时间内将公钥存储在区块链网络中的权利，代理节点在通过申请后，生成一对临时的公钥私钥对以及用户的ID，代理节点将临时公钥、用户ID、用户托管的起止时间、代理节点的ID、签名算法以及信息类型标志打包成一个信息包，利用代理节点的公钥签名后发布到网络中，代理节点将密钥对信息以及用户ID发送给请求的用户，用户在信息被区块链确认之后，发布自己的公钥；</li>
+<li>用户生成公钥私钥对，并生成公钥信息，将自己的公钥信息广播到区块链网络中用户在生成自己的密钥之后，将密钥的生效时间段、用户ID、签名算法以及信息类型标志封装成附加信息附在生成的公钥之后，生成完整的公钥信息，用户对完整的公钥信息进行签名，签名所使用的私钥为存在于区块链中的有效公钥信息对应的私钥，使得收到信息的节点能够对公钥信息进行验证；</li>
+<li>节点对收到的公钥信息进行验证，加入本地缓存当节点从网络中收到一条公钥信息时，通过附加信息中存储的签名者ID查找到用户存储于区块链中的公钥信息；通过验证签名的方式证明信息由用户自身生成；在信息通过签名验证后，节点会将公钥信息存储入本地缓存中，同时转发用户的公钥信息；</li>
+<li>节点在生成或收到一个新的区块后，开始进行下一个区块的生成节点…<br>详见<a href="http://www.jigao616.com/zhuanlijieshao_19865819.aspx#" target="_blank" rel="noopener">此处</a></li>
+</ol>
+<h2 id="其他密码学算法"><a href="#其他密码学算法" class="headerlink" title="其他密码学算法"></a>其他密码学算法</h2><h3 id="哈希算法"><a href="#哈希算法" class="headerlink" title="哈希算法"></a>哈希算法</h3><ul>
+<li>SHA256</li>
+<li>RipeMDk1</li>
+<li>Base58</li>
+</ul>
+<h3 id="差分隐私-Differential-Privacy-DP"><a href="#差分隐私-Differential-Privacy-DP" class="headerlink" title="差分隐私(Differential Privacy, DP)"></a>差分隐私(Differential Privacy, DP)</h3><ol>
+<li><p>核心思想：对于差别只有一条记录的两个数据集，查询它们获得相同值得概率非常接近。即攻击者无法通过计算统计信息获得数据集中单个记录信息。</p>
+</li>
+<li><p>实现方案：在查询结果中加入随机性，常用方法是在结果上加满足某种分布的噪音。</p>
+<ul>
+<li>法一：Laplace机制—在查询结果中加入Laplace分布的噪音，适合于数值型输出；</li>
+<li>法二：指数机制—在查询结果中用指数分布来调整概率，适用于非数值型输出。</li>
+</ul>
+</li>
+<li><p>缺点：对背景知识假设过强，需在查询中加入大量的随机化，导致数据的可用性急剧下降。</p>
+<ul>
+<li>数据库小时，查询误差极大；</li>
+<li>数据库大时，非DP的传统方法(k-anonymity, I-diversity)也能基本保证privacy，同时查询误差极小。</li>
+</ul>
+</li>
+<li><p>应用：</p>
+<ul>
+<li>一般和访问权限控制以及信息流向分析(Information Flow Analysis)用来做统计分析型数据库的隐私保障；</li>
+<li>PATE框架：有效保护隐私训练数据。详见<a href="https://www.leiphone.com/news/201805/R5zrzjRqZF1noTix.html" target="_blank" rel="noopener">此处</a></li>
+</ul>
+</li>
+<li><p>小结：</p>
+<p><strong>差分隐私(DP)：降低隐私预算—-&gt; 噪声聚合机制—-&gt; 共识度↑ + 噪声↑</strong></p>
+<p>共识度高，加入噪声不会影响统计结果的正确性。</p>
+<p>噪声过多，会影响结果的可用性。可训练新的推断模型投入使用（PATE框架的student模型）。</p>
+</li>
+</ol>
+<h3 id="同态加密-Homomorphic-Encryption"><a href="#同态加密-Homomorphic-Encryption" class="headerlink" title="同态加密(Homomorphic Encryption)"></a>同态加密(Homomorphic Encryption)</h3><ol>
+<li>核心思想：加密运算和代数运算可以交换顺序的加密方案。</li>
+<li>内容：E(x)为加密算法，若 x op y = z，则E(x) op E(y) = E(z)</li>
+<li>实现方案：<ul>
+<li>部分同态加密：<ul>
+<li>ELGamal公钥加密算法—乘法同态性</li>
+<li>Paillier公钥加密算法—加法同态性</li>
+<li>RSA公钥加密算法—乘法同态性</li>
+<li>Benaloh—加法同态性</li>
+<li>Goldwasser-Micali—异或同态性</li>
+</ul>
+</li>
+<li>全同态加密：<ul>
+<li>BGN：BonehGod-Nissim，同时对加法和乘法同态，可进行任意次加法同态运算，只能做一次乘法同态运算。可使用HElib库实现</li>
+<li>Gentry算法：可使用FHE-CODE实现</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>意义：数据处理权和数据所有权分离，使企业可以在防止自身数据泄露的同时，利用云服务的算力。</li>
+</ol>
+<h3 id="零知识证明-Zero-Knowledge-Proof"><a href="#零知识证明-Zero-Knowledge-Proof" class="headerlink" title="零知识证明(Zero-Knowledge Proof)"></a>零知识证明(Zero-Knowledge Proof)</h3><ol>
+<li>核心思想：证明信息正确性而不暴露信息。</li>
+<li>在计算机领域，一般将原始问题映射为NP问题，验证者只要验证证明者给出的NP问题的解即可，无需将计算结果的算法暴露出来。</li>
+<li>应用：<a href="http://chriseth.github.io/notes/articles/zksnarks/zksnarks.pdf" target="_blank" rel="noopener">Zcash</a>，Super-ZK等</li>
+</ol>
+<h3 id="基于属性加密-Homomorphic-Encryption"><a href="#基于属性加密-Homomorphic-Encryption" class="headerlink" title="基于属性加密(Homomorphic Encryption)"></a>基于属性加密(Homomorphic Encryption)</h3><p>详见<a href="https://wenku.baidu.com/view/56d84df327d3240c8547ef41.html" target="_blank" rel="noopener">此处</a></p>
+<h3 id="可验证随机函数-Verifiable-Random-Function-VRF"><a href="#可验证随机函数-Verifiable-Random-Function-VRF" class="headerlink" title="可验证随机函数(Verifiable Random Function,VRF)"></a>可验证随机函数(Verifiable Random Function,VRF)</h3><p>主要是哈希算法+非对称加密+零知识证明，其中零知识证明通过双线性对构造。详见<a href="https://zxy110.github.io/zxy/2019/01/02/VRF/#more">此处</a>。</p>
+<h3 id="量子密码学"><a href="#量子密码学" class="headerlink" title="量子密码学"></a>量子密码学</h3><ol>
+<li>在量子计算模型下，经典数论假设的大整数分解和计算有限域/椭圆曲线上的离散对数问题都存在多项式时间（PPT）的量子算法。</li>
+<li>后量子密码系统常见数学技巧：<ul>
+<li>杂凑函数，多变量方程—构造签名方案</li>
+<li>纠错码—构造加密方案</li>
+<li>格密码</li>
+<li>超奇异椭圆曲线同源问题—密钥交换和签名方案的构造</li>
+</ul>
+</li>
+</ol>
+<h2 id="其他隐私保护方案"><a href="#其他隐私保护方案" class="headerlink" title="其他隐私保护方案"></a>其他隐私保护方案</h2><h3 id="通道-Channels"><a href="#通道-Channels" class="headerlink" title="通道(Channels)"></a>通道(Channels)</h3><p>通道内的交易都不是在链上</p>
+<h3 id="混合器-Mixes"><a href="#混合器-Mixes" class="headerlink" title="混合器(Mixes)"></a>混合器(Mixes)</h3><ol>
+<li><p>核心内容：中心处理器(混合器)混合交易的来源与去向，使无法追溯。</p>
+</li>
+<li><p>举个栗子：</p>
+<p>初始状态：A-&gt;B：10￥，C-&gt;D：10￥</p>
+<p>混合后： A-&gt;B：2￥，C-&gt;B：8￥，A-&gt;D：8￥；C-&gt;D：2￥</p>
+</li>
+<li><p>用途：</p>
+<ul>
+<li>抵抗Sybil攻击（女巫攻击，即攻击者创建多个账户达到攻击的目的）</li>
+<li>保护隐私的投票</li>
+</ul>
+</li>
+</ol>
+<h3 id="环签名-Ring-Signature"><a href="#环签名-Ring-Signature" class="headerlink" title="环签名(Ring Signature)"></a>环签名(Ring Signature)</h3><p>拥有一组群签名中任意一个签名的签署权。</p>
+<h3 id="门限签名-Threshold-Signature"><a href="#门限签名-Threshold-Signature" class="headerlink" title="门限签名(Threshold Signature)"></a>门限签名(Threshold Signature)</h3>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/zxy/tags/区块链/" rel="tag"># 区块链</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/zxy/2019/03/25/双线性对的研究以及在分布式系统中的应用/" rel="next" title="双线性对的研究以及在分布式系统中的应用">
+                <i class="fa fa-chevron-left"></i> 双线性对的研究以及在分布式系统中的应用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">吃不胖的小鱼</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/zxy/archives/">
+                
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/zxy/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/zxy/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zxy110" title="GitHub &rarr; https://github.com/zxy110" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:zxy_whu@qq.com" title="E-Mail &rarr; mailto:zxy_whu@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#对称加密算法"><span class="nav-text">对称加密算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分组密码"><span class="nav-text">分组密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#序列密码"><span class="nav-text">序列密码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非对称加密算法"><span class="nav-text">非对称加密算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RSA公钥密码体制"><span class="nav-text">RSA公钥密码体制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Diffle-Hellman密钥交换"><span class="nav-text">Diffle-Hellman密钥交换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ELGamal公钥密码体制"><span class="nav-text">ELGamal公钥密码体制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ECC椭圆曲线密码"><span class="nav-text">ECC椭圆曲线密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双线性映射-Bilinear-Pairing"><span class="nav-text">双线性映射(Bilinear Pairing)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于HTTPs"><span class="nav-text">关于HTTPs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他密码学算法"><span class="nav-text">其他密码学算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#哈希算法"><span class="nav-text">哈希算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#差分隐私-Differential-Privacy-DP"><span class="nav-text">差分隐私(Differential Privacy, DP)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同态加密-Homomorphic-Encryption"><span class="nav-text">同态加密(Homomorphic Encryption)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#零知识证明-Zero-Knowledge-Proof"><span class="nav-text">零知识证明(Zero-Knowledge Proof)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于属性加密-Homomorphic-Encryption"><span class="nav-text">基于属性加密(Homomorphic Encryption)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可验证随机函数-Verifiable-Random-Function-VRF"><span class="nav-text">可验证随机函数(Verifiable Random Function,VRF)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#量子密码学"><span class="nav-text">量子密码学</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他隐私保护方案"><span class="nav-text">其他隐私保护方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通道-Channels"><span class="nav-text">通道(Channels)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#混合器-Mixes"><span class="nav-text">混合器(Mixes)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环签名-Ring-Signature"><span class="nav-text">环签名(Ring Signature)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#门限签名-Threshold-Signature"><span class="nav-text">门限签名(Threshold Signature)</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吃不胖的小鱼</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/zxy/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/zxy/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/zxy/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/zxy/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/zxy/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/zxy/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/zxy/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/zxy/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/zxy/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/zxy/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
