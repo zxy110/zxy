@@ -113,7 +113,7 @@
 <meta property="og:image" content="https://zxy110.github.io/zxy/2019/03/25/images/BilinearPairing/9.png">
 <meta property="og:image" content="https://zxy110.github.io/zxy/2019/03/25/images/BilinearPairing/GC+OT.png">
 <meta property="og:image" content="https://zxy110.github.io/zxy/2019/03/25/images/BilinearPairing/OT.png">
-<meta property="og:updated_time" content="2019-03-26T02:52:19.368Z">
+<meta property="og:updated_time" content="2019-03-26T02:53:24.499Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="双线性对的研究以及在分布式系统中的应用">
 <meta name="twitter:description" content="背景介绍公钥密码体制  基于大整数因子分解困难，如RSA —-随着计算能力的增强，要求RSA的密钥长度越来越长 基于离散对数困难问题，如EIGamal密码体制和椭圆曲线密码体制（Elliptiic Curve Cryptosystem，ECC）—-ECC密钥长度要求更短，160bit密钥长度的ECC与1024bit的RSA具有相当的安全性。  ECC具备密钥量小，安全性高，灵活性好和易于硬件实现的">
@@ -393,7 +393,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-03-26 10:52:19" itemprop="dateModified" datetime="2019-03-26T10:52:19+08:00">2019-03-26</time>
+                <time title="修改时间：2019-03-26 10:53:24" itemprop="dateModified" datetime="2019-03-26T10:53:24+08:00">2019-03-26</time>
               
             
           </span>
@@ -475,8 +475,8 @@
 <li>完备隐藏，计算绑定的比特承诺方案</li>
 </ol>
 <h5 id="Pedersen的知识承诺方案"><a href="#Pedersen的知识承诺方案" class="headerlink" title="Pedersen的知识承诺方案"></a><strong>Pedersen的知识承诺方案</strong></h5><ol>
-<li>初始化：假设g，h是群 $G_{n}$（n为素数）中的两个生成元，$log_gh$是未知的，即计算离散对数不可行；</li>
-<li>承诺阶段：为了承诺整数$a\in Z_n$，发送者在$Z_n$中随机选择数 r，计算a的承诺$C(a,r)=g^a h^r$</li>
+<li>初始化：假设g，h是群 <script type="math/tex">G_{n}</script>（n为素数）中的两个生成元，$log_gh$是未知的，即计算离散对数不可行；</li>
+<li>承诺阶段：为了承诺整数$a\in Z_n$，发送者在$Z_n$中随机选择数 r，计算a的承诺<script type="math/tex">C(a,r)=g^a h^r</script></li>
 <li>公布阶段：发送者发送a, r给接收者，接收者计算$g^a h^r$，判断结果是否等于$C(a, r)$，若相等则正确揭开承诺，否则拒绝承诺。</li>
 </ol>
 <h4 id="2-秘密共享"><a href="#2-秘密共享" class="headerlink" title="2. 秘密共享"></a>2. 秘密共享</h4><h5 id="目的"><a href="#目的" class="headerlink" title="目的"></a><strong>目的</strong></h5><ol>
