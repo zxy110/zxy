@@ -94,30 +94,30 @@
 
 
 
-  <meta name="description" content="背景介绍公钥密码体制  基于大整数因子分解困难，如RSA —-随着计算能力的增强，要求RSA的密钥长度越来越长 基于离散对数困难问题，如EIGamal密码体制和椭圆曲线密码体制（Elliptiic Curve Cryptosystem，ECC）—-ECC密钥长度要求更短，160bit密钥长度的ECC与1024bit的RSA具有相当的安全性。  ECC具备密钥量小，安全性高，灵活性好和易于硬件实现的">
+  <meta name="description" content="背景介绍公钥密码体制 基于大整数因子分解困难，如RSA —-随着计算能力的增强，要求RSA的密钥长度越来越长 基于离散对数困难问题，如EIGamal密码体制和椭圆曲线密码体制（Elliptiic Curve Cryptosystem，ECC）—-ECC密钥长度要求更短，160bit密钥长度的ECC与1024bit的RSA具有相当的安全性。  ECC具备密钥量小，安全性高，灵活性好和易于硬件实现的特">
 <meta name="keywords" content="双线性对">
 <meta property="og:type" content="article">
 <meta property="og:title" content="双线性对的研究以及在分布式系统中的应用">
 <meta property="og:url" content="https://zxy110.github.io/zxy/2019/03/25/双线性对的研究以及在分布式系统中的应用/index.html">
 <meta property="og:site_name" content="Sarah&#39;s Blogs">
-<meta property="og:description" content="背景介绍公钥密码体制  基于大整数因子分解困难，如RSA —-随着计算能力的增强，要求RSA的密钥长度越来越长 基于离散对数困难问题，如EIGamal密码体制和椭圆曲线密码体制（Elliptiic Curve Cryptosystem，ECC）—-ECC密钥长度要求更短，160bit密钥长度的ECC与1024bit的RSA具有相当的安全性。  ECC具备密钥量小，安全性高，灵活性好和易于硬件实现的">
+<meta property="og:description" content="背景介绍公钥密码体制 基于大整数因子分解困难，如RSA —-随着计算能力的增强，要求RSA的密钥长度越来越长 基于离散对数困难问题，如EIGamal密码体制和椭圆曲线密码体制（Elliptiic Curve Cryptosystem，ECC）—-ECC密钥长度要求更短，160bit密钥长度的ECC与1024bit的RSA具有相当的安全性。  ECC具备密钥量小，安全性高，灵活性好和易于硬件实现的特">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://zxy110.github.io/images/BP/BP1.png">
-<meta property="og:image" content="https://zxy110.github.io/images/BP/2.png">
-<meta property="og:image" content="https://zxy110.github.io/images/BilinearPairing/3.png">
-<meta property="og:image" content="https://zxy110.github.io/zxy/2019/03/25/images/BilinearPairing/4.png">
-<meta property="og:image" content="https://zxy110.github.io/zxy/2019/03/25/images/BilinearPairing/5.png">
-<meta property="og:image" content="https://zxy110.github.io/zxy/2019/03/25/images/BilinearPairing/6.png">
-<meta property="og:image" content="https://zxy110.github.io/zxy/2019/03/25/images/BilinearPairing/7.png">
-<meta property="og:image" content="https://zxy110.github.io/zxy/2019/03/25/images/BilinearPairing/8.png">
-<meta property="og:image" content="https://zxy110.github.io/zxy/2019/03/25/images/BilinearPairing/9.png">
-<meta property="og:image" content="https://zxy110.github.io/zxy/2019/03/25/images/BilinearPairing/GC+OT.png">
-<meta property="og:image" content="https://zxy110.github.io/zxy/2019/03/25/images/BilinearPairing/OT.png">
-<meta property="og:updated_time" content="2019-03-26T02:53:24.499Z">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190326111752152.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0MDYyMTA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190326111815155.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0MDYyMTA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019032611182515.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0MDYyMTA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190326111832319.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0MDYyMTA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190326111839399.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0MDYyMTA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190326111845667.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0MDYyMTA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019032611185259.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0MDYyMTA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190326111859679.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0MDYyMTA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190326111905468.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0MDYyMTA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190326111708202.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0MDYyMTA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190326111656477.png">
+<meta property="og:updated_time" content="2019-03-26T03:43:49.818Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="双线性对的研究以及在分布式系统中的应用">
-<meta name="twitter:description" content="背景介绍公钥密码体制  基于大整数因子分解困难，如RSA —-随着计算能力的增强，要求RSA的密钥长度越来越长 基于离散对数困难问题，如EIGamal密码体制和椭圆曲线密码体制（Elliptiic Curve Cryptosystem，ECC）—-ECC密钥长度要求更短，160bit密钥长度的ECC与1024bit的RSA具有相当的安全性。  ECC具备密钥量小，安全性高，灵活性好和易于硬件实现的">
-<meta name="twitter:image" content="https://zxy110.github.io/images/BP/BP1.png">
+<meta name="twitter:description" content="背景介绍公钥密码体制 基于大整数因子分解困难，如RSA —-随着计算能力的增强，要求RSA的密钥长度越来越长 基于离散对数困难问题，如EIGamal密码体制和椭圆曲线密码体制（Elliptiic Curve Cryptosystem，ECC）—-ECC密钥长度要求更短，160bit密钥长度的ECC与1024bit的RSA具有相当的安全性。  ECC具备密钥量小，安全性高，灵活性好和易于硬件实现的特">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190326111752152.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0MDYyMTA1,size_16,color_FFFFFF,t_70">
 
 
 
@@ -393,7 +393,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-03-26 10:53:24" itemprop="dateModified" datetime="2019-03-26T10:53:24+08:00">2019-03-26</time>
+                <time title="修改时间：2019-03-26 11:43:49" itemprop="dateModified" datetime="2019-03-26T11:43:49+08:00">2019-03-26</time>
               
             
           </span>
@@ -452,71 +452,72 @@
       
 
       
-        <h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>公钥密码体制</p>
-<ol>
+        <h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><h3 id="公钥密码体制"><a href="#公钥密码体制" class="headerlink" title="公钥密码体制"></a>公钥密码体制</h3><ol>
 <li>基于大整数因子分解困难，如RSA —-随着计算能力的增强，要求RSA的密钥长度越来越长</li>
 <li>基于离散对数困难问题，如EIGamal密码体制和椭圆曲线密码体制（Elliptiic Curve Cryptosystem，ECC）—-ECC密钥长度要求更短，160bit密钥长度的ECC与1024bit的RSA具有相当的安全性。</li>
 </ol>
-<p>ECC具备密钥量小，安全性高，灵活性好和易于硬件实现的特点。其上的双线性对是构造加密，签名方案的重要工具，如：代数曲线上的Weil Pairing和Tate Pairing。</p>
+<h3 id="ECC"><a href="#ECC" class="headerlink" title="ECC"></a>ECC</h3><p>具备密钥量小，安全性高，灵活性好和易于硬件实现的特点。其上的双线性对是构造加密，签名方案的重要工具，如：代数曲线上的Weil Pairing和Tate Pairing。</p>
 <h2 id="双线性对（Bilinear-Pairing）"><a href="#双线性对（Bilinear-Pairing）" class="headerlink" title="双线性对（Bilinear Pairing）"></a>双线性对（Bilinear Pairing）</h2><blockquote>
 <p>截图取自《基于双线性对的分布式密码系统与应用研究》田有亮</p>
 </blockquote>
-<p><img src="\images\BP\BP1.png" alt="BP1"></p>
-<p><img src="\images\BP\2.png" alt="BP2"></p>
-<p><img src="\images\BilinearPairing\3.png" alt></p>
-<p><img src="..\images\BilinearPairing\4.png" alt></p>
-<p><img src="..\images\BilinearPairing\5.png" alt></p>
-<p><img src="..\images\BilinearPairing\6.png" alt></p>
-<p><img src="..\images\BilinearPairing\7.png" alt></p>
-<p><img src="..\images\BilinearPairing\8.png" alt></p>
-<p><img src="..\images\BilinearPairing\9.png" alt></p>
-<h2 id="分布式密码技术"><a href="#分布式密码技术" class="headerlink" title="分布式密码技术"></a>分布式密码技术</h2><h4 id="1-知识承诺"><a href="#1-知识承诺" class="headerlink" title="1. 知识承诺"></a>1. 知识承诺</h4><h5 id="分类"><a href="#分类" class="headerlink" title="分类"></a><strong>分类</strong></h5><ol>
+<p><img src="https://img-blog.csdnimg.cn/20190326111752152.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0MDYyMTA1,size_16,color_FFFFFF,t_70" alt></p>
+<p><img src="https://img-blog.csdnimg.cn/20190326111815155.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0MDYyMTA1,size_16,color_FFFFFF,t_70" alt></p>
+<p><img src="https://img-blog.csdnimg.cn/2019032611182515.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0MDYyMTA1,size_16,color_FFFFFF,t_70" alt></p>
+<p><img src="https://img-blog.csdnimg.cn/20190326111832319.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0MDYyMTA1,size_16,color_FFFFFF,t_70" alt></p>
+<p><img src="https://img-blog.csdnimg.cn/20190326111839399.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0MDYyMTA1,size_16,color_FFFFFF,t_70" alt></p>
+<p><img src="https://img-blog.csdnimg.cn/20190326111845667.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0MDYyMTA1,size_16,color_FFFFFF,t_70" alt></p>
+<p><img src="https://img-blog.csdnimg.cn/2019032611185259.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0MDYyMTA1,size_16,color_FFFFFF,t_70" alt></p>
+<p><img src="https://img-blog.csdnimg.cn/20190326111859679.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0MDYyMTA1,size_16,color_FFFFFF,t_70" alt></p>
+<p><img src="https://img-blog.csdnimg.cn/20190326111905468.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0MDYyMTA1,size_16,color_FFFFFF,t_70" alt></p>
+<h2 id="分布式密码技术"><a href="#分布式密码技术" class="headerlink" title="分布式密码技术"></a>分布式密码技术</h2><h3 id="1-知识承诺"><a href="#1-知识承诺" class="headerlink" title="1. 知识承诺"></a>1. 知识承诺</h3><h4 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h4><ol>
 <li>计算隐藏，完备绑定的比特承诺方案</li>
 <li>完备隐藏，计算绑定的比特承诺方案</li>
 </ol>
-<h5 id="Pedersen的知识承诺方案"><a href="#Pedersen的知识承诺方案" class="headerlink" title="Pedersen的知识承诺方案"></a><strong>Pedersen的知识承诺方案</strong></h5><ol>
-<li>初始化：假设g，h是群 <script type="math/tex">G_{n}</script>（n为素数）中的两个生成元，$log_gh$是未知的，即计算离散对数不可行；</li>
+<h4 id="Pedersen的知识承诺方案"><a href="#Pedersen的知识承诺方案" class="headerlink" title="Pedersen的知识承诺方案"></a><strong>Pedersen的知识承诺方案</strong></h4><ol>
+<li>初始化：假设g，h是群 $G_{n}$（n为素数）中的两个生成元，$log_gh$是未知的，即计算离散对数不可行；</li>
 <li>承诺阶段：为了承诺整数$a\in Z_n$，发送者在$Z_n$中随机选择数 r，计算a的承诺<script type="math/tex">C(a,r)=g^a h^r</script></li>
 <li>公布阶段：发送者发送a, r给接收者，接收者计算$g^a h^r$，判断结果是否等于$C(a, r)$，若相等则正确揭开承诺，否则拒绝承诺。</li>
 </ol>
-<h4 id="2-秘密共享"><a href="#2-秘密共享" class="headerlink" title="2. 秘密共享"></a>2. 秘密共享</h4><h5 id="目的"><a href="#目的" class="headerlink" title="目的"></a><strong>目的</strong></h5><ol>
+<h3 id="2-秘密共享"><a href="#2-秘密共享" class="headerlink" title="2. 秘密共享"></a>2. 秘密共享</h3><h4 id="目的"><a href="#目的" class="headerlink" title="目的"></a><strong>目的</strong></h4><ol>
 <li>实现权力分散以避免滥用职权；</li>
 <li>即使失去了部分子秘密，也不会影响到秘密信息的恢复。</li>
 </ol>
-<h5 id="方案"><a href="#方案" class="headerlink" title="方案"></a><strong>方案</strong></h5><ol>
+<h4 id="方案"><a href="#方案" class="headerlink" title="方案"></a><strong>方案</strong></h4><ol>
 <li>集中环境下-支持多播通信的组密钥管理协议</li>
 <li>集中式密钥分发中心</li>
 <li>分布式密钥分发中心（将单个服务器的任务分配给一组服务器）</li>
 <li>可验证秘密分享和知识的非交互零知识证明</li>
 </ol>
-<h5 id="内容"><a href="#内容" class="headerlink" title="内容"></a><strong>内容</strong></h5><p>1979年Shamir和Blakley分别提出了秘密共享机制，即将敏感信息（如密钥）分发给团队中的成员进行管理，以分散加/解密权力，签名权力和验证权力。秘密共享方案是一种分发，保存和恢复秘密信息的方法，是研究如何在一组参与者之间分配或共享一个秘密信息，而该共享秘密信息只有在规定数量的<strong>授权用户</strong>共同参与才能用特定的方法恢复。若一个秘密共享方案中每个非授权集都不能得到该秘密的任何有用信息，则称其为完美秘密共享(Perfect Secret Sharing)。</p>
-<h5 id="分类-1"><a href="#分类-1" class="headerlink" title="分类"></a><strong>分类</strong></h5><p>可验证秘密共享(Verifiable Secret Sharing, VSS)</p>
-<p>可公开验证秘密共享(Publicly Verifiable Secret Sharing, PVSS)</p>
-<p>先应式秘密共享(Proactive Verifiable Secret Sharing，PSS)</p>
-<p>在线秘密共享(On-line Secret Sharing)</p>
-<p>具有除名功能的秘密共享(Secret Sharing with Disenrollment)</p>
-<h5 id="实现"><a href="#实现" class="headerlink" title="实现"></a><strong>实现</strong></h5><ol>
+<h4 id="内容"><a href="#内容" class="headerlink" title="内容"></a><strong>内容</strong></h4><p>1979年Shamir和Blakley分别提出了秘密共享机制，即将敏感信息（如密钥）分发给团队中的成员进行管理，以分散加/解密权力，签名权力和验证权力。秘密共享方案是一种分发，保存和恢复秘密信息的方法，是研究如何在一组参与者之间分配或共享一个秘密信息，而该共享秘密信息只有在规定数量的<strong>授权用户</strong>共同参与才能用特定的方法恢复。若一个秘密共享方案中每个非授权集都不能得到该秘密的任何有用信息，则称其为完美秘密共享(Perfect Secret Sharing)。</p>
+<h4 id="分类-1"><a href="#分类-1" class="headerlink" title="分类"></a><strong>分类</strong></h4><ol>
+<li>可验证秘密共享(Verifiable Secret Sharing, VSS)</li>
+<li>可公开验证秘密共享(Publicly Verifiable Secret Sharing, PVSS)</li>
+<li>先应式秘密共享(Proactive Verifiable Secret Sharing，PSS)</li>
+<li>在线秘密共享(On-line Secret Sharing)</li>
+<li>具有除名功能的秘密共享(Secret Sharing with Disenrollment)</li>
+</ol>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a><strong>实现</strong></h4><ol>
 <li>Shamir的Lagrange插值方法(常用)</li>
 <li>Blakley的基于矢量空间的几何方法</li>
 <li>Asmuth和Bloom的中国剩余定理方法</li>
 </ol>
-<h5 id="Shamir的-t-n-门限秘密共享方案"><a href="#Shamir的-t-n-门限秘密共享方案" class="headerlink" title="Shamir的(t,n)门限秘密共享方案"></a>Shamir的(t,n)门限秘密共享方案</h5><p>参与用户集$U={U_1,U_2,…U_n}$，授权集成员数最小为 t，庄家Sam要分享的秘密信息为 s</p>
-<p><strong>秘密分享</strong>：Sam在$Z_n$上随机选一个次数为$t-1$的秘密多项式$f(x) \in_R Z_n[X]$：</p>
-<p><script type="math/tex">f(x) = a_0 + a_1x+...+a_{t-1}x^{t+1}mod n</script>，</p>
-<p>并满足$f(0)=a_0=s$，同时为U的每个成员选择一个代表其身份的整数$x_i$，Sam计算<script type="math/tex">s_i=f(x_i)(i=1,2,...,n)</script>作为子秘密交给$U_i(i=1,…,n)$秘密持有。</p>
-<p><strong>信息恢复</strong>：随机选取U中的t个成员可以恢复秘密信息s，记这t个成员为$A={U<em>i}</em>{j\in\Phi}$，其中$|A|=t，\Phi\in{1,2,…,n} $，由A中成员所提供的值$(x<em>i,s_i)</em>{i\in\Phi}$可以恢复s，由Lagrange插值原理（[直观理解Lagrange插值法][<a href="https://www.zhihu.com/question/58333118]）可得" target="_blank" rel="noopener">https://www.zhihu.com/question/58333118]）可得</a></p>
-<p><script type="math/tex">f(x)=\sum_{i\in\Phi}\pi_i(x)f(x_i)=\sum_{i\in\Phi}\pi_i(x)s_i</script>，</p>
-<p>其中 $\pi<em>i(x)=\prod</em>{j\in\Phi,j\neq i}\frac{x-x_i}{x_i-x_j}mod n$为Lagrange系数，这样就可以恢复秘密信息s=f(0)。</p>
+<h4 id="Shamir的-t-n-门限秘密共享方案"><a href="#Shamir的-t-n-门限秘密共享方案" class="headerlink" title="Shamir的(t,n)门限秘密共享方案"></a>Shamir的(t,n)门限秘密共享方案</h4><p>​    参与用户集$U={U_1,U_2,…U_n}$，授权集成员数最小为 t，庄家Sam要分享的秘密信息为 s</p>
+<ol>
+<li><p><strong>秘密分享</strong>：Sam在<script type="math/tex">Z_n</script>上随机选一个次数为<script type="math/tex">t-1</script>的秘密多项式<script type="math/tex">f(x) \in_R Z_n[X]</script>：<script type="math/tex">f(x) = a_0 + a_1x+...+a_{t-1}x^{t+1}mod n</script>，并满足<script type="math/tex">f(0)=a_0=s</script>，同时为U的每个成员选择一个代表其身份的整数<script type="math/tex">x_i</script>，Sam计算<script type="math/tex">s_i=f(x_i)(i=1,2,...,n)</script>作为子秘密交给<script type="math/tex">U_i(i=1,...,n)</script>秘密持有。</p>
+</li>
+<li><p><strong>信息恢复</strong>：随机选取U中的t个成员可以恢复秘密信息s，记这t个成员为<script type="math/tex">A={U_i}_{j\in\Phi}</script>，其中<script type="math/tex">|A|=t</script>，<script type="math/tex">\Phi\in{1,2,...,n}</script>，由A中成员所提供的值<script type="math/tex">(x_i,s_i)_{i\in\Phi}</script>可以恢复s，由Lagrange插值原理（<a href="https://www.zhihu.com/question/58333118" target="_blank" rel="noopener">直观理解Lagrange插值法</a>）可得<script type="math/tex">f(x)=\sum_{i\in\Phi}\pi_i(x)f(x_i)=\sum_{i\in\Phi}\pi_i(x)s_i</script>，其中 <script type="math/tex">\pi_i(x)=\prod_{j\in\Phi,j\neq i}\frac{x-x_i}{x_i-x_j}mod n</script>为Lagrange系数，这样就可以恢复秘密信息s=f(0)。</p>
 <p><strong>问题</strong>：欺诈问题（包括成员欺诈和庄家欺诈），动态增加或删除参与者，对泄露的子秘密的处理和子秘密动态更新问题等。</p>
-<h4 id="3-安全多方计算"><a href="#3-安全多方计算" class="headerlink" title="3. 安全多方计算"></a>3. 安全多方计算</h4><h5 id="内容-1"><a href="#内容-1" class="headerlink" title="内容"></a>内容</h5><p>安全多方计算(SMC, Secure Multi-party Computation)用于解决一组互不信任的参与方之间保护隐私的协同计算问题，要求n个参与者$(P_1,P_2,…,P_n)$，每个$P_i(i=1,2,…,n)$持有一个秘密输入$x_i$，希望共同计算一个函数$f(x_1,x_2,…,x_n)$，计算结束后要求每方都能得到各自正确的输出，并且自己的秘密输入也没有泄露给其他的参与者。</p>
-<h5 id="分类-2"><a href="#分类-2" class="headerlink" title="分类"></a>分类</h5><ol>
+</li>
+</ol>
+<h3 id="3-安全多方计算"><a href="#3-安全多方计算" class="headerlink" title="3. 安全多方计算"></a>3. 安全多方计算</h3><h4 id="内容-1"><a href="#内容-1" class="headerlink" title="内容"></a>内容</h4><p>安全多方计算(SMC, Secure Multi-party Computation)用于解决一组互不信任的参与方之间保护隐私的协同计算问题，要求n个参与者$(P_1,P_2,…,P_n)$，每个$P_i(i=1,2,…,n)$持有一个秘密输入$x_i$，希望共同计算一个函数$f(x_1,x_2,…,x_n)$，计算结束后要求每方都能得到各自正确的输出，并且自己的秘密输入也没有泄露给其他的参与者。</p>
+<h4 id="分类-2"><a href="#分类-2" class="headerlink" title="分类"></a>分类</h4><ol>
 <li><p>根据参与方个数的不同，分为2PC和多于3个参与方的MPC。</p>
 <p><strong>安全两方计算</strong>所使用的协议为加密电路(Garbled Circuit, GC)+不经意传输(Oblivious Transfer, OT)，<strong>安全多方计算</strong>所使用的协议为同态加密+秘密分享+OT（+承诺方案+零知识证明等）</p>
 </li>
 <li><p>根据模型不同，分为半诚实敌手模型和恶意敌手模型。</p>
 </li>
 </ol>
-<h5 id="执行过程"><a href="#执行过程" class="headerlink" title="执行过程"></a>执行过程</h5><ol>
+<h4 id="执行过程"><a href="#执行过程" class="headerlink" title="执行过程"></a>执行过程</h4><ol>
 <li><p>先对输入数据做预处理</p>
 <p>原则：尽量少的数据输入和多的数据预处理</p>
 </li>
@@ -525,10 +526,10 @@
 <p>方式：手动/电路编译器Frutta（使用类C的Frutta语言，在JUGO-IDE中编写计算逻辑，通过编译器直接将计算逻辑转换成电路。图灵完备，适配IDE，门槛低。）</p>
 </li>
 <li><p>将输入的布尔电路做GC和OT算法</p>
-<p><img src="..\images\BilinearPairing\GC+OT.png" alt></p>
+<p><img src="https://img-blog.csdnimg.cn/20190326111708202.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM0MDYyMTA1,size_16,color_FFFFFF,t_70" alt></p>
 </li>
 </ol>
-<h5 id="详细算法介绍"><a href="#详细算法介绍" class="headerlink" title="详细算法介绍"></a>详细算法介绍</h5><ol>
+<h4 id="详细算法介绍"><a href="#详细算法介绍" class="headerlink" title="详细算法介绍"></a>详细算法介绍</h4><ol>
 <li><p>GC：一种加密计算方式，只揭露计算结果，不揭露输入和中间值，他对电路中的每个运算(AND,OR,NOT)进行加密处理。</p>
 <p>GC过程：</p>
 <ul>
@@ -540,7 +541,7 @@
 </li>
 <li><p>OT：JUGO技术产品使用的是2选1的OT协议，在2选1的OT协议中，发送方有两个消息$m_0$和$m_1$，他要将其中一消息发送给接收方。接收方收到其中一消息后，发送方却不知道发送的是哪一个消息，并且接收方也无法获知另一个消息。OT协议需要消耗大量的信息交互和部分耗时的密码学计算。</p>
 <p>OT协议过程：</p>
-<p><img src="..\images\BilinearPairing\OT.png" alt></p>
+<p><img src="https://img-blog.csdnimg.cn/20190326111656477.png" alt></p>
 <p>在这个过程中：</p>
 <ul>
 <li>Alice无法获知Bob选择的是哪一个，即Alice不知道b的值；</li>
@@ -548,7 +549,7 @@
 </ul>
 </li>
 </ol>
-<h5 id="实战：JUGO"><a href="#实战：JUGO" class="headerlink" title="实战：JUGO"></a>实战：JUGO</h5><p>矩阵云推出JUGO安全多方计算平台，针对企业级用户，基于MPC的安全数据交易平台。通过在本地部署MPC节点，进行数据协同计算。 </p>
+<h4 id="实战：JUGO"><a href="#实战：JUGO" class="headerlink" title="实战：JUGO"></a>实战：JUGO</h4><p>矩阵云推出JUGO安全多方计算平台，针对企业级用户，基于MPC的安全数据交易平台。通过在本地部署MPC节点，进行数据协同计算。 </p>
 <p>JUGO特性：</p>
 <ul>
 <li>支持semi-honest通用两方算法：GC+OT。</li>
@@ -595,8 +596,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/zxy/2019/03/11/RipeMD160/" rel="next" title="RipeMD160">
-                <i class="fa fa-chevron-left"></i> RipeMD160
+              <a href="/zxy/2019/03/11/LevelDB/" rel="next" title="LevelDB">
+                <i class="fa fa-chevron-left"></i> LevelDB
               </a>
             
           </div>
@@ -672,7 +673,7 @@
                 
                   <a href="/zxy/archives/">
                 
-                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -734,7 +735,7 @@
                     
                       
                     
-                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -796,7 +797,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景介绍"><span class="nav-text">背景介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#双线性对（Bilinear-Pairing）"><span class="nav-text">双线性对（Bilinear Pairing）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式密码技术"><span class="nav-text">分布式密码技术</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-知识承诺"><span class="nav-text">1. 知识承诺</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#分类"><span class="nav-text">分类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Pedersen的知识承诺方案"><span class="nav-text">Pedersen的知识承诺方案</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-秘密共享"><span class="nav-text">2. 秘密共享</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#目的"><span class="nav-text">目的</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#方案"><span class="nav-text">方案</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#内容"><span class="nav-text">内容</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#分类-1"><span class="nav-text">分类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实现"><span class="nav-text">实现</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Shamir的-t-n-门限秘密共享方案"><span class="nav-text">Shamir的(t,n)门限秘密共享方案</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-安全多方计算"><span class="nav-text">3. 安全多方计算</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#内容-1"><span class="nav-text">内容</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#分类-2"><span class="nav-text">分类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#执行过程"><span class="nav-text">执行过程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#详细算法介绍"><span class="nav-text">详细算法介绍</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实战：JUGO"><span class="nav-text">实战：JUGO</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-text"> </span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景介绍"><span class="nav-text">背景介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#公钥密码体制"><span class="nav-text">公钥密码体制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ECC"><span class="nav-text">ECC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#双线性对（Bilinear-Pairing）"><span class="nav-text">双线性对（Bilinear Pairing）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式密码技术"><span class="nav-text">分布式密码技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-知识承诺"><span class="nav-text">1. 知识承诺</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分类"><span class="nav-text">分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pedersen的知识承诺方案"><span class="nav-text">Pedersen的知识承诺方案</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-秘密共享"><span class="nav-text">2. 秘密共享</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#目的"><span class="nav-text">目的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方案"><span class="nav-text">方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内容"><span class="nav-text">内容</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分类-1"><span class="nav-text">分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现"><span class="nav-text">实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Shamir的-t-n-门限秘密共享方案"><span class="nav-text">Shamir的(t,n)门限秘密共享方案</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-安全多方计算"><span class="nav-text">3. 安全多方计算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#内容-1"><span class="nav-text">内容</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分类-2"><span class="nav-text">分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#执行过程"><span class="nav-text">执行过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#详细算法介绍"><span class="nav-text">详细算法介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实战：JUGO"><span class="nav-text">实战：JUGO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-text"> </span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -985,6 +986,53 @@
   
   
 
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+</style>
+
+    
   
 
 

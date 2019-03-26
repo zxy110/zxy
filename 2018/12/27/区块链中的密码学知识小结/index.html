@@ -94,18 +94,20 @@
 
 
 
-  <meta name="description" content="这段时间接触了很多区块链密码学方面的东西，借此做个小结。 1. 差分隐私使无法通过统计信息推断个体信息，通过将统计结果随机化实现。 2. 同态加密加密运算和代数运算可以交换顺序的加密方案。 3. 零知识证明寻找可替代方案，证明信息正确性而不暴露信息。 4. 基于属性加密5. 可验证随机函数VRF（Verifiable Random Functions）">
+  <meta name="description" content="这段时间接触了很多区块链密码学方面的东西，借此做个小结。 公私钥密码体系在传统的HTTPs加密通信中，公钥的验证是通过CA进行的，即向CA注册时，能够拿到由CA签名加密的公钥，这样别人拿到后用CA的公钥解密即可验证其身份。 具体来说，A与B通信，首先A向B发送自己的公钥，B通过CA验证A公钥的真实性，然后用A的公钥加密B的公钥和通信时使用的密钥，发给B，B用自己的私钥解开就拿到了通信密钥，之后即可">
 <meta name="keywords" content="区块链">
 <meta property="og:type" content="article">
 <meta property="og:title" content="区块链中的密码学知识小结">
 <meta property="og:url" content="https://zxy110.github.io/zxy/2018/12/27/区块链中的密码学知识小结/index.html">
 <meta property="og:site_name" content="Sarah&#39;s Blogs">
-<meta property="og:description" content="这段时间接触了很多区块链密码学方面的东西，借此做个小结。 1. 差分隐私使无法通过统计信息推断个体信息，通过将统计结果随机化实现。 2. 同态加密加密运算和代数运算可以交换顺序的加密方案。 3. 零知识证明寻找可替代方案，证明信息正确性而不暴露信息。 4. 基于属性加密5. 可验证随机函数VRF（Verifiable Random Functions）">
+<meta property="og:description" content="这段时间接触了很多区块链密码学方面的东西，借此做个小结。 公私钥密码体系在传统的HTTPs加密通信中，公钥的验证是通过CA进行的，即向CA注册时，能够拿到由CA签名加密的公钥，这样别人拿到后用CA的公钥解密即可验证其身份。 具体来说，A与B通信，首先A向B发送自己的公钥，B通过CA验证A公钥的真实性，然后用A的公钥加密B的公钥和通信时使用的密钥，发给B，B用自己的私钥解开就拿到了通信密钥，之后即可">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-01T08:14:35.782Z">
+<meta property="og:image" content="f:/GitHub/zxy/hexo/source/_posts/images/PK.png">
+<meta property="og:updated_time" content="2019-03-26T03:05:12.851Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="区块链中的密码学知识小结">
-<meta name="twitter:description" content="这段时间接触了很多区块链密码学方面的东西，借此做个小结。 1. 差分隐私使无法通过统计信息推断个体信息，通过将统计结果随机化实现。 2. 同态加密加密运算和代数运算可以交换顺序的加密方案。 3. 零知识证明寻找可替代方案，证明信息正确性而不暴露信息。 4. 基于属性加密5. 可验证随机函数VRF（Verifiable Random Functions）">
+<meta name="twitter:description" content="这段时间接触了很多区块链密码学方面的东西，借此做个小结。 公私钥密码体系在传统的HTTPs加密通信中，公钥的验证是通过CA进行的，即向CA注册时，能够拿到由CA签名加密的公钥，这样别人拿到后用CA的公钥解密即可验证其身份。 具体来说，A与B通信，首先A向B发送自己的公钥，B通过CA验证A公钥的真实性，然后用A的公钥加密B的公钥和通信时使用的密钥，发给B，B用自己的私钥解开就拿到了通信密钥，之后即可">
+<meta name="twitter:image" content="f:/GitHub/zxy/hexo/source/_posts/images/PK.png">
 
 
 
@@ -381,7 +383,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-03-01 16:14:35" itemprop="dateModified" datetime="2019-03-01T16:14:35+08:00">2019-03-01</time>
+                <time title="修改时间：2019-03-26 11:05:12" itemprop="dateModified" datetime="2019-03-26T11:05:12+08:00">2019-03-26</time>
               
             
           </span>
@@ -441,10 +443,21 @@
 
       
         <p>这段时间接触了很多区块链密码学方面的东西，借此做个小结。</p>
-<h3 id="1-差分隐私"><a href="#1-差分隐私" class="headerlink" title="1. 差分隐私"></a>1. 差分隐私</h3><p>使无法通过统计信息推断个体信息，通过将统计结果随机化实现。</p>
-<h3 id="2-同态加密"><a href="#2-同态加密" class="headerlink" title="2. 同态加密"></a>2. 同态加密</h3><p>加密运算和代数运算可以交换顺序的加密方案。</p>
-<h3 id="3-零知识证明"><a href="#3-零知识证明" class="headerlink" title="3. 零知识证明"></a>3. 零知识证明</h3><p>寻找可替代方案，证明信息正确性而不暴露信息。</p>
-<h3 id="4-基于属性加密"><a href="#4-基于属性加密" class="headerlink" title="4. 基于属性加密"></a>4. 基于属性加密</h3><h3 id="5-可验证随机函数VRF（Verifiable-Random-Functions）"><a href="#5-可验证随机函数VRF（Verifiable-Random-Functions）" class="headerlink" title="5. 可验证随机函数VRF（Verifiable Random Functions）"></a>5. 可验证随机函数VRF（Verifiable Random Functions）</h3>
+<h2 id="公私钥密码体系"><a href="#公私钥密码体系" class="headerlink" title="公私钥密码体系"></a>公私钥密码体系</h2><p>在传统的HTTPs加密通信中，公钥的验证是通过CA进行的，即向CA注册时，能够拿到由CA签名加密的公钥，这样别人拿到后用CA的公钥解密即可验证其身份。</p>
+<p>具体来说，A与B通信，首先A向B发送自己的公钥，B通过CA验证A公钥的真实性，然后用A的公钥加密B的公钥和通信时使用的密钥，发给B，B用自己的私钥解开就拿到了通信密钥，之后即可通过通信密钥进行对称加密实现通信。原理图如下：<br><img src="F:/GitHub/zxy/hexo/source/_posts/images/PK.png" alt></p>
+<p>区块链中也依然存在CA实现公钥身份证明，若要去掉CA这个中心呢，设想公钥是否可以用区块链来实现公开透明共识，然后发现有人写了一篇专利，主要步骤如下：</p>
+<ol>
+<li>用户向代理节点申请将公钥托管在区块链中，用户向代理节点发送请求，请求在一定时间内将公钥存储在区块链网络中的权利，代理节点在通过申请后，生成一对临时的公钥私钥对以及用户的ID，代理节点将临时公钥、用户ID、用户托管的起止时间、代理节点的ID、签名算法以及信息类型标志打包成一个信息包，利用代理节点的公钥签名后发布到网络中，代理节点将密钥对信息以及用户ID发送给请求的用户，用户在信息被区块链确认之后，发布自己的公钥；</li>
+<li>用户生成公钥私钥对，并生成公钥信息，将自己的公钥信息广播到区块链网络中用户在生成自己的密钥之后，将密钥的生效时间段、用户ID、签名算法以及信息类型标志封装成附加信息附在生成的公钥之后，生成完整的公钥信息，用户对完整的公钥信息进行签名，签名所使用的私钥为存在于区块链中的有效公钥信息对应的私钥，使得收到信息的节点能够对公钥信息进行验证；</li>
+<li>节点对收到的公钥信息进行验证，加入本地缓存当节点从网络中收到一条公钥信息时，通过附加信息中存储的签名者ID查找到用户存储于区块链中的公钥信息；通过验证签名的方式证明信息由用户自身生成；在信息通过签名验证后，节点会将公钥信息存储入本地缓存中，同时转发用户的公钥信息；</li>
+<li>节点在生成或收到一个新的区块后，开始进行下一个区块的生成节点…<br>详见<a href="http://www.jigao616.com/zhuanlijieshao_19865819.aspx#" target="_blank" rel="noopener">此处</a></li>
+</ol>
+<h2 id="双线性对"><a href="#双线性对" class="headerlink" title="双线性对"></a>双线性对</h2><p>详见<a href="https://zxy110.github.io/zxy/2019/03/25/%E5%8F%8C%E7%BA%BF%E6%80%A7%E5%AF%B9%E7%9A%84%E7%A0%94%E7%A9%B6%E4%BB%A5%E5%8F%8A%E5%9C%A8%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/">此处</a></p>
+<h2 id="差分隐私"><a href="#差分隐私" class="headerlink" title="差分隐私"></a>差分隐私</h2><p>使无法通过统计信息推断个体信息，通过将统计结果随机化实现。</p>
+<h2 id="同态加密"><a href="#同态加密" class="headerlink" title="同态加密"></a>同态加密</h2><p>加密运算和代数运算可以交换顺序的加密方案。</p>
+<h2 id="零知识证明"><a href="#零知识证明" class="headerlink" title="零知识证明"></a>零知识证明</h2><p>寻找可替代方案，证明信息正确性而不暴露信息。</p>
+<h2 id="基于属性加密"><a href="#基于属性加密" class="headerlink" title="基于属性加密"></a>基于属性加密</h2><h2 id="可验证随机函数VRF"><a href="#可验证随机函数VRF" class="headerlink" title="可验证随机函数VRF"></a>可验证随机函数VRF</h2><p>详见<a href="https://zxy110.github.io/zxy/2019/01/02/VRF/#more">此处</a></p>
+
       
     </div>
 
@@ -480,8 +493,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/zxy/2018/12/27/简述区块链中公私钥体系/" rel="next" title="简述区块链中公私钥体系">
-                <i class="fa fa-chevron-left"></i> 简述区块链中公私钥体系
+              <a href="/zxy/2018/12/14/MongoDB/" rel="next" title="MongoDB">
+                <i class="fa fa-chevron-left"></i> MongoDB
               </a>
             
           </div>
@@ -490,8 +503,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/zxy/2019/01/01/POS概论/" rel="prev" title="POS">
-                POS <i class="fa fa-chevron-right"></i>
+              <a href="/zxy/2019/01/02/VRF/" rel="prev" title="VRF">
+                VRF <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -561,7 +574,7 @@
                 
                   <a href="/zxy/archives/">
                 
-                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -623,7 +636,7 @@
                     
                       
                     
-                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -685,7 +698,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-差分隐私"><span class="nav-text">1. 差分隐私</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-同态加密"><span class="nav-text">2. 同态加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-零知识证明"><span class="nav-text">3. 零知识证明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-基于属性加密"><span class="nav-text">4. 基于属性加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-可验证随机函数VRF（Verifiable-Random-Functions）"><span class="nav-text">5. 可验证随机函数VRF（Verifiable Random Functions）</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#公私钥密码体系"><span class="nav-text">公私钥密码体系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#双线性对"><span class="nav-text">双线性对</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#差分隐私"><span class="nav-text">差分隐私</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同态加密"><span class="nav-text">同态加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#零知识证明"><span class="nav-text">零知识证明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于属性加密"><span class="nav-text">基于属性加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可验证随机函数VRF"><span class="nav-text">可验证随机函数VRF</span></a></li></ol></div>
             
 
           </div>
